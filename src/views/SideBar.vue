@@ -56,7 +56,6 @@ import {
   DesktopOutlined,
   UserOutlined,
   TeamOutlined,
-  FileOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   RocketOutlined,

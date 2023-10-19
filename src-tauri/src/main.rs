@@ -3,9 +3,13 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
+mod entity;
+mod start_page;
+mod utils;
+
 use tauri::Manager;
 use window_vibrancy::{apply_acrylic, apply_mica};
-
+use crate::start_page::start;
 
 fn main() {
     tauri::Builder::default()
@@ -22,18 +26,7 @@ fn main() {
             window.set_decorations(true).unwrap();
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_message,plus_five])
+        .invoke_handler(tauri::generate_handler![start::start_yunzai_and_api])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-}
-
-
-#[tauri::command]
-fn get_message() -> String {
-    return "Here is message from rust backend".to_string();
-}
-
-#[tauri::command]
-fn plus_five(number: i32) -> i32 {
-    return number + 5;
 }
