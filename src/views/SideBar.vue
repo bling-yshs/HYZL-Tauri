@@ -1,6 +1,10 @@
 <template>
   <a-layout class="parent-element">
-    <a-layout-sider v-model:collapsed="collapsed" theme="light">
+    <a-layout-sider
+      v-model:collapsed="collapsed"
+      breakpoint="md"
+      theme="light"
+    >
       <!--测试按钮-->
       <!--<a-button @click="testFn"></a-button>-->
       <!--收放按钮-->
@@ -39,9 +43,9 @@
           <a-menu-item key="6">Team 1</a-menu-item>
           <a-menu-item key="8">Team 2</a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="9">
-          <file-outlined/>
-          <span>File</span>
+        <a-menu-item key="/settings">
+          <SettingOutlined/>
+          <span>设置</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -56,6 +60,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   RocketOutlined,
+  SettingOutlined,
 } from '@ant-design/icons-vue';
 import {ref, watch} from 'vue';
 import router from "../router";
@@ -86,11 +91,11 @@ watch(() => selectedKeys.value, (value) => {
 </script>
 <style scoped>
 .parent-element {
-  min-height: 100vh;
   background-color: transparent;
 }
 
 .parent-element * {
   background-color: transparent;
 }
+
 </style>
