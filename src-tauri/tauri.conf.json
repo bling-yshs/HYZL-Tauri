@@ -7,8 +7,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "tauri-vue3-ts-vite-ant-design-example",
-    "version": "0.1.0"
+    "productName": "HYZL-Tauri",
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -57,10 +57,13 @@
       {
         "center": true,
         "fullscreen": false,
-        "height": 600,
+        "height": 570,
         "resizable": true,
-        "title": "tauri-vue3-ts-vite-ant-design-example",
-        "width": 800
+        "title": "Hello Yunzai Launcher",
+        "width": 900,
+        "label": "main",
+        "transparent": true,
+        "decorations": false
       }
     ]
   }

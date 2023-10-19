@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@ant-design/icons-vue':
+    specifier: ^7.0.1
+    version: 7.0.1(vue@3.3.4)
   '@tauri-apps/api':
     specifier: ^1.5.0
     version: 1.5.0
