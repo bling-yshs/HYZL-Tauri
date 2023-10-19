@@ -62,8 +62,8 @@
         "title": "Hello Yunzai Launcher",
         "width": 900,
         "label": "main",
-        "transparent": true,
-        "decorations": false
+        "decorations": false,
+        "transparent": true
       }
     ]
   }

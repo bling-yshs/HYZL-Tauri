@@ -20,7 +20,7 @@
         </a-menu-item>
         <a-menu-item key="/issue-fix">
           <desktop-outlined/>
-          <span>BUG修复</span>
+          <span>问题修复</span>
         </a-menu-item>
         <a-sub-menu key="sub1">
           <template #title>
