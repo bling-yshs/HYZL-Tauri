@@ -1,0 +1,79 @@
+name: Release
+run-name: "✨ 发布正式版: (${{ github.event.head_commit.message }})"
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Rust setup
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'pnpm'
+
+      - name: Build release
+        env:
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+        run: |
+          pnpm install
+          pnpm tauri-build
+
+      - name: Upload build to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: msi
+          path: ./src-tauri/target/release/bundle/msi/*
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ steps.get_version.outputs.VERSION }}
+          allowUpdates: true
+          removeArtifacts: true
+          artifacts: ./src-tauri/target/release/bundle/msi/*
+          tag: ${{ steps.get_version.outputs.VERSION }}
+
+      - name: Run update.cjs
+        run: |
+          $version="${{ github.ref_name }}".Substring(1)
+          $last_tag=$(git describe --abbrev=0 --tags HEAD^)
+          $notes_command="git log --oneline --pretty=format:'%s' ${last_tag}...HEAD"
+          $notes="更新内容: $(Invoke-Expression $notes_command)"
+          $sig=$(cat ../src-tauri/target/release/bundle/msi/*.sig)
+          $url="https://github.abskoop.workers.dev/https://github.com/bling-yshs/HYZL-Tauri/releases/download/v${version}/HYZL-Tauri_${version}_x64_zh-CN.msi.zip"
+          cd ./update
+          node update.cjs "${version}" "${notes}" "${sig}" "${url}"
+          cd ..
+
+      - name: gist-sync
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gist_id: 3f562fdf79a2dbb4b6af75742aca4818
+          file_path: ./update/update.json
