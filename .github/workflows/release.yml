@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
@@ -61,12 +64,18 @@ jobs:
 
       - name: Run update.cjs
         run: |
+          echo $(git log)
           $version="${{ github.ref_name }}".Substring(1)
+          echo "version: ${version}"
           $last_tag=$(git describe --abbrev=0 --tags HEAD^)
-          $notes_command="git log --oneline --pretty=format:'%s' ${last_tag}...HEAD"
-          $notes="更新内容: $(Invoke-Expression $notes_command)"
+            echo "last_tag: ${last_tag}"
+          $notes_command="git log --pretty=format:'%s' ${last_tag}...HEAD"
+            echo "notes_command: ${notes_command}"
+          $notes="更新内容: $(Invoke-Expression ${notes_command})"
+            echo "notes: ${notes}"
           $sig=$(cat ./src-tauri/target/release/bundle/msi/*.sig)
-          $url="https://github.abskoop.workers.dev/https://github.com/bling-yshs/HYZL-Tauri/releases/download/v${version}/HYZL-Tauri_${version}_x64_zh-CN.msi.zip"
+            echo "sig: ${sig}"
+          $url="https://github.com/bling-yshs/HYZL-Tauri/releases/download/v${version}/HYZL-Tauri_${version}_x64_zh-CN.msi.zip"
           cd ./update
           node update.cjs "${version}" "${notes}" "${sig}" "${url}"
           cd ..
