@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "HYZL-Tauri",
-    "version": "0.0.1"
+    "version": "0.0.3"
   },
   "tauri": {
     "allowlist": {
@@ -42,6 +42,9 @@
       "shortDescription": "",
       "targets": "all",
       "windows": {
+        "wix": {
+          "language": "zh-CN"
+        },
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
@@ -51,7 +54,10 @@
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": true,
+      "endpoints": ["https://gist.githubusercontent.com/bling-yshs/3f562fdf79a2dbb4b6af75742aca4818/raw/"],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEVBRUYzM0I5RjAxRjhCQjEKUldTeGl4L3d1VFB2NnFqSXdOTFB4WUR1WHhJeHZXbXFHYmR0bTh0MGhMbDVDNGFselZtSHNWWFkK"
     },
     "windows": [
       {

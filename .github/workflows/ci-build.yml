@@ -1,16 +1,27 @@
 name: Auto Build Tauri App On Push
-
+run-name: "🛠️ CI-自动构建: (${{ github.event.head_commit.message }})"
 on:
   push:
-    branches:
-      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  ci-build:
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Rust setup
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -24,6 +35,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Build release
+        env:
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         run: |
           pnpm install
           pnpm tauri-build
@@ -32,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: msi
-          path: ./src-tauri/target/release/bundle/msi/*.msi
+          path: ./src-tauri/target/release/bundle/msi/*
 
       - name: Create ci release
         uses: ncipollo/release-action@v1
@@ -41,6 +55,6 @@ jobs:
           generateReleaseNotes: true
           allowUpdates: true
           removeArtifacts: true
-          artifacts: ./src-tauri/target/release/bundle/msi/*.msi
+          artifacts: ./src-tauri/target/release/bundle/msi/*
           prerelease: true
           tag: v9.9.9
