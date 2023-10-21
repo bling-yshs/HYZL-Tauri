@@ -12,32 +12,39 @@ concurrency:
 
 jobs:
   release:
+    permissions:
+      contents: write
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          fetch-tags: true
 
-      - name: Rust setup
+      - name: Setup rust
         uses: dtolnay/rust-toolchain@stable
-
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./src-tauri -> target"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: latest
 
-      - name: Sync node version and setup cache
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: "lts/*"
-          cache: "pnpm"
+          node-version: "18.18.2"
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./node_modules
+          key: tauri-node_modules
+
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./src-tauri/target
+          key: tauri-cargo
 
       - name: Install frontend dependencies
         run: pnpm install
@@ -52,30 +59,5 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: "HYZL-Tauri v__VERSION__"
           releaseBody: "See the assets to download and install this version."
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
-
-      - name: Run update.cjs
-        run: |
-          echo $(git log)
-          $version="${{ github.ref_name }}".Substring(1)
-          echo "version: ${version}"
-          $last_tag=$(git describe --abbrev=0 --tags HEAD^)
-            echo "last_tag: ${last_tag}"
-          $notes_command="git log --pretty=format:'%s' ${last_tag}...HEAD"
-            echo "notes_command: ${notes_command}"
-          $notes="更新内容: $(Invoke-Expression ${notes_command})"
-            echo "notes: ${notes}"
-          $sig=$(cat ./src-tauri/target/release/bundle/msi/*.sig)
-            echo "sig: ${sig}"
-          $url="https://github.com/bling-yshs/HYZL-Tauri/releases/download/v${version}/HYZL-Tauri_${version}_x64_zh-CN.msi.zip"
-          cd ./update
-          node update.cjs "${version}" "${notes}" "${sig}" "${url}"
-          cd ..
-
-      - name: gist-sync
-        uses: exuanbo/actions-deploy-gist@v1
-        with:
-          token: ${{ secrets.GIST_TOKEN }}
-          gist_id: 3f562fdf79a2dbb4b6af75742aca4818
-          file_path: ./update/update.json
