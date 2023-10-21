@@ -8,7 +8,7 @@ pub async fn reinstall_dependence() -> String {
     if hyzl_path::YUNZAI_DIR.join("node_modules").exists() {
         match std::fs::remove_dir_all(hyzl_path::YUNZAI_DIR.join("node_modules")) {
             Ok(_) => {}
-            Err(_) => return ReturnData::fast_failure("删除node_modules文件夹失败"),
+            Err(_) => return ReturnData::fast_failure("删除 node_modules 文件夹失败"),
         };
     }
     //在YUNZAI_DIR文件夹下执行pnpm install
