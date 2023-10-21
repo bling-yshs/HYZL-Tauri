@@ -38,7 +38,7 @@ pub async fn download_sign_api() -> String {
     if output.status.success() {
         info!("API下载成功");
         match fs::rename("unidbg-fetch-qsign", "API") {
-            Ok(_) => { return json!(ReturnData::fast_success("下载成功！")).to_string(); }
+            Ok(_) => { return json!(ReturnData::fast_success("下载成功!")).to_string(); }
             Err(err) => {
                 warn!("文件夹重命名失败：{}", err);
                 return ReturnData::fast_failure(&err.to_string()[..]);
