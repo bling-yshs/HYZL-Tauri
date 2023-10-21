@@ -16,7 +16,7 @@
       <a-menu style="border-right: 0" v-model:selectedKeys="selectedKeys" theme="light" mode="inline">
         <a-menu-item key="/start">
           <rocket-outlined/>
-          <span>一键启动</span>
+          <span>主页</span>
         </a-menu-item>
         <a-menu-item key="/issue-fix">
           <desktop-outlined/>
