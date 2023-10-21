@@ -53,14 +53,16 @@ jobs:
           name: msi
           path: ./src-tauri/target/release/bundle/msi/*
 
-      - name: Create release
-        uses: ncipollo/release-action@v1
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ steps.get_version.outputs.VERSION }}
-          allowUpdates: true
-          removeArtifacts: true
-          artifacts: ./src-tauri/target/release/bundle/msi/*
-          tag: ${{ steps.get_version.outputs.VERSION }}
+          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+          releaseName: "App Name v__VERSION__" # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: "See the assets to download and install this version."
+          releaseDraft: true
+          prerelease: false
 
       - name: Run update.cjs
         run: |
