@@ -26,32 +26,21 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: './src-tauri -> target'
+          workspaces: "./src-tauri -> target"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: latest
 
-      - name: Setup node
+      - name: Sync node version and setup cache
         uses: actions/setup-node@v3
         with:
-          node-version: lts/*
-          cache: 'pnpm'
+          node-version: "lts/*"
+          cache: "pnpm"
 
-      - name: Build release
-        env:
-          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-        run: |
-          pnpm install
-          pnpm tauri-build
-
-      - name: Upload build to artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: msi
-          path: ./src-tauri/target/release/bundle/msi/*
+      - name: Install frontend dependencies
+        run: pnpm install
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
