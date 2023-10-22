@@ -46,6 +46,13 @@ jobs:
             ./src-tauri/target
           key: tauri-cargo
 
+      - name: ls
+        run: |
+          ls
+          echo end
+          cd ./src-tauri
+          ls
+
       - name: Build release
         env:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
