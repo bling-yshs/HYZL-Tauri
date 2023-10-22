@@ -2,6 +2,8 @@ name: Auto Build Tauri App On Push
 run-name: "🛠️ CI-自动构建: (${{ github.event.head_commit.message }})"
 on:
   push:
+    branches:
+      - main
     tags-ignore:
       - 'v*'
   workflow_dispatch:
