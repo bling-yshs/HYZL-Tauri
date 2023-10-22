@@ -2,6 +2,8 @@ name: Release
 run-name: "✨ 发布正式版: (${{ github.event.head_commit.message }})"
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   workflow_dispatch:
