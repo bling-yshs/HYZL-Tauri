@@ -17,7 +17,7 @@ tauri-build = { version = "1.5.0", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.5.2", features = ["updater"] }
+tauri = { version = "1.5.2", features = [ "fs-all", "http-all", "updater"] }
 window-vibrancy = "0.4.2"
 log4rs = "1.2.0"
 tokio = "1.33.0"

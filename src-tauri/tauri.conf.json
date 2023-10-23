@@ -12,7 +12,15 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "http": {
+        "scope": ["https://*", "http://*"],
+        "all": true
+      },
+      "fs": {
+        "scope": ["**"],
+        "all": true
+      }
     },
     "bundle": {
       "active": true,
