@@ -14,6 +14,9 @@ dependencies:
   ant-design-vue:
     specifier: ^4.0.5
     version: 4.0.5(vue@3.3.4)
+  tauri-plugin-upload-api:
+    specifier: github:tauri-apps/tauri-plugin-upload#v1
+    version: github.com/tauri-apps/tauri-plugin-upload/d024acc6b69b4fe794a51227da9f47ba4584b21c
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -313,6 +316,11 @@ packages:
 
   /@tauri-apps/api@1.5.0:
     resolution: {integrity: sha512-yQY9wpVNuiYhLLuyDlu1nBpqJELT1fGp7OctN4rW9I2W1T2p7A3tqPxsEzQprEwneQRBAlPM9vC8NsnMbct+pg==}
+    engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+    dev: false
+
+  /@tauri-apps/api@1.5.1:
+    resolution: {integrity: sha512-6unsZDOdlXTmauU3NhWhn+Cx0rODV+rvNvTdvolE5Kls5ybA6cqndQENDt1+FS0tF7ozCP66jwWoH6a5h90BrA==}
     engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
     dev: false
 
@@ -900,3 +908,11 @@ packages:
   /yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
+
+  github.com/tauri-apps/tauri-plugin-upload/d024acc6b69b4fe794a51227da9f47ba4584b21c:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-upload/tar.gz/d024acc6b69b4fe794a51227da9f47ba4584b21c}
+    name: tauri-plugin-upload-api
+    version: 0.0.0
+    dependencies:
+      '@tauri-apps/api': 1.5.1
+    dev: false

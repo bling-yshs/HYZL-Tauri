@@ -5,9 +5,7 @@
       breakpoint="md"
       theme="light"
     >
-      <!--测试按钮-->
       <!--<a-button @click="testFn"></a-button>-->
-      <!--收放按钮-->
       <a-button type="text" @click="() => {collapsed = !collapsed}">
         <menu-unfold-outlined v-if="collapsed"/>
         <menu-fold-outlined v-else/>
@@ -61,26 +59,27 @@ import {
   RocketOutlined,
   SettingOutlined,
 } from '@ant-design/icons-vue';
-import {ref, watch} from 'vue';
-import router from "../router";
+import {onMounted, ref, watch} from 'vue';
+import {useRoute} from 'vue-router'
 
-//测试按钮
 // const testFn = () => {
-//   console.log("测试按钮");
-//   console.log(router.currentRoute.value)
+//   console.log(route.fullPath)
 // };
 
 // 收放按钮
 const collapsed = ref<boolean>(false);
-
+const route = useRoute();
 
 // 选择的菜单项
 const selectedKeys = ref<string[]>(['']);
 const emit = defineEmits(["changeSelect"]);
 // 监控路由变化来改变选择的菜单项
-watch(() => router.currentRoute.value.fullPath, (value) => {
-  selectedKeys.value = Array.of(value)
+onMounted(async () => {
+  setTimeout(() => {
+    selectedKeys.value = [route.fullPath];
+  }, 100)
 });
+
 // 路由跳转
 watch(() => selectedKeys.value, (value) => {
   emit('changeSelect', value);
