@@ -14,7 +14,6 @@ let notWin11 = ref(true);
 onMounted(async () => {
   let response = await invoke('is_win11');
   let res = JSON.parse(response as string) as DataResponse;
-  console.log(res)
   if (res.code === 200) {
     notWin11.value = false;
   }

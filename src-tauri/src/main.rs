@@ -14,6 +14,7 @@ use crate::init::windows;
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_upload::init())
         .setup(|app| {
             let window = app.get_window("main").unwrap();
             #[cfg(target_os = "windows")]
