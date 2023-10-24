@@ -53,7 +53,7 @@ jobs:
       - name: Upload build result to artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: msi
+          name: build-msi-${{ github.event.head_commit.message }}
           path: ./src-tauri/target/release/bundle/msi/*
 
       - name: Create ci release to tag v9.9.9
