@@ -31,8 +31,11 @@ let isDownloading = ref(false)
 
 import {appDataDir} from '@tauri-apps/api/path';
 import {path} from "@tauri-apps/api";
-
+import { version } from '@tauri-apps/api/os';
 const downloadTest = async () => {
+  const osVersion = await version();
+  messageApi.info(osVersion)
+  return
   const appDataDirPath = await appDataDir();
   await createDir(appDataDirPath, {recursive: true})
   const svgPath = await path.join(appDataDirPath, 't01.svg');
