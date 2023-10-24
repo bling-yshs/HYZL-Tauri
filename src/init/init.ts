@@ -1,9 +1,9 @@
 import {createDir, exists} from "@tauri-apps/api/fs";
-import {appDataDir} from '@tauri-apps/api/path';
+import {appDir} from "../entity/hyzlPath.ts";
 
 
 async function init() {
-  let appData = await appDataDir();
+  let appData = await appDir()
   if (!await exists(appData)) {
     await createDir(appData, {recursive: true})
   }

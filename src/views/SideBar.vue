@@ -16,6 +16,10 @@
           <rocket-outlined/>
           <span>主页</span>
         </a-menu-item>
+        <a-menu-item key="/download">
+          <desktop-outlined/>
+          <span>下载</span>
+        </a-menu-item>
         <a-menu-item key="/issue-fix">
           <desktop-outlined/>
           <span>问题修复</span>
