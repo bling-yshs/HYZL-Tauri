@@ -2,7 +2,7 @@
   <div>
     <context-holder/>
     <normal-content>
-      <a-progress v-if="isDownloading" :percent="percent" size="300" :show-info="false"/>
+      <a-progress v-if="isDownloading" :percent="downloadPercent" size="300"/>
       <a-space direction="vertical">
         <a-space direction="horizontal">
           <a-button type="primary" @click="startWithApi">启动云崽&签名API</a-button>
@@ -17,26 +17,32 @@
 <script setup lang="ts">
 import NormalContent from "./NormalContent.vue";
 import {message} from 'ant-design-vue';
-
-const [messageApi, contextHolder] = message.useMessage();
+import {createDir} from '@tauri-apps/api/fs';
 import {invoke} from "@tauri-apps/api/tauri";
 import {DataResponse} from "../entity/response.ts";
 import {download} from "tauri-plugin-upload-api";
 import {ref} from "vue";
 
-let percent = ref(0)
+const [messageApi, contextHolder] = message.useMessage();
+
+let downloadPercent = ref(0)
 let isDownloading = ref(false)
 //下载测试
+
+import {appDataDir} from '@tauri-apps/api/path';
+import {path} from "@tauri-apps/api";
+
 const downloadTest = async () => {
+  const appDataDirPath = await appDataDir();
+  await createDir(appDataDirPath, {recursive: true})
+  const svgPath = await path.join(appDataDirPath, 't01.svg');
   isDownloading.value = true
-  percent.value = 0
+  downloadPercent.value = 0
   await download(
     "https://tauri.app/meta/tauri_logo_light.svg",
-    "./avbddd.svg",
+    svgPath,
     (progress, total) => {
-      percent.value += progress / total * 100
-      console.log(progress / total * 100)
-      console.log(`Downloaded ${progress} of ${total} bytes`)
+      downloadPercent.value += progress / total * 100
     },
   );
   setTimeout(() => {
