@@ -5,12 +5,10 @@ windows_subsystem = "windows"
 
 mod entity;
 mod utils;
-mod init;
 mod page;
 
 use tauri::Manager;
 use window_vibrancy::{ apply_mica};
-use crate::init::windows;
 
 fn main() {
     tauri::Builder::default()
@@ -27,7 +25,6 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             page::start::start::start_yunzai_and_api,
-            windows::is_win11,
             page::issue_fix::issue_fix::reinstall_dependence,
             page::start::start::start_yunzai,
             page::start::start::download_sign_api])

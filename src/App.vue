@@ -7,17 +7,18 @@
 <script setup lang="ts">
 import NormalPage from "./views/IndexPage.vue";
 import {onMounted, ref} from "vue";
-import {invoke} from "@tauri-apps/api/tauri";
-import {DataResponse} from "./entity/response.ts";
+
 let notWin11 = ref(true);
+import {version} from '@tauri-apps/api/os';
 
 onMounted(async () => {
-  let response = await invoke('is_win11');
-  let res = JSON.parse(response as string) as DataResponse;
-  if (res.code === 200) {
-    notWin11.value = false;
-  }
+  changeWhenNotWin11()
 });
+
+async function changeWhenNotWin11() {
+  const osVersion = await version();
+  Number(osVersion.split('.')[2]) > 22000 ? notWin11.value = false : notWin11.value = true
+}
 </script>
 <style scoped>
 .not-win11 {
