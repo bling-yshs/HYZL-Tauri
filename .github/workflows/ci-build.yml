@@ -18,6 +18,12 @@ jobs:
       - name: Setup rust
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -27,18 +33,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18.18.2"
-
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./node_modules
-          key: tauri-node_modules
-
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: './src-tauri -> target'
+          cache: "pnpm"
 
       - name: Build app
         env:
