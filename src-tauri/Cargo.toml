@@ -18,7 +18,7 @@ tauri-build = { version = "1.5.0", features = [] }
 tauri-plugin-upload = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.5.2", features = [ "fs-all", "http-all", "updater"] }
+tauri = { version = "1.5.2", features = [ "path-all", "fs-all", "http-all", "updater", "devtools"] }
 window-vibrancy = "0.4.2"
 log4rs = "1.2.0"
 tokio = "1.33.0"
@@ -30,4 +30,4 @@ winver = "1.0.0"
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
 # If you use cargo directly instead of tauri's cli you can use this feature flag to switch between tauri's `dev` and `build` modes.
 # DO NOT REMOVE!!
-custom-protocol = [ "tauri/custom-protocol" ]
+custom-protocol = ["tauri/custom-protocol"]
