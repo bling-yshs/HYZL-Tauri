@@ -13,16 +13,11 @@
   "tauri": {
     "allowlist": {
       "all": true,
-      "path": {
-        "all": true
-      },
       "http": {
-        "scope": ["https://*", "http://*"],
-        "all": true
+        "scope": ["https://*", "http://*"]
       },
       "fs": {
-        "scope": ["**"],
-        "all": true
+        "scope": ["**"]
       }
     },
     "bundle": {
