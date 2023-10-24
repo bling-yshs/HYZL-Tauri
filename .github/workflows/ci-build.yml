@@ -28,19 +28,19 @@ jobs:
         with:
           node-version: "18.18.2"
 
-#      - name: Cache node_modules
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ./node_modules
-#          key: tauri-node_modules
-#
-#      - name: Cache rust
-#        uses: actions/cache@v3
-#        with:
-#          path: |
-#            ./src-tauri/target
-#          key: tauri-cargo
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./node_modules
+          key: tauri-node_modules
+
+      - name: Cache rust
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./src-tauri/target
+          key: tauri-cargo
 
       - name: Build app
         env:
