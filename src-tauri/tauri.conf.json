@@ -18,6 +18,25 @@
       },
       "fs": {
         "scope": ["**"]
+      },
+      "shell": {
+        "scope": [
+          {
+            "name": "cmd",
+            "args": true,
+            "cmd": "cmd"
+          },
+          {
+            "name": "git",
+            "args": true,
+            "cmd": "git"
+          },
+          {
+            "name": "node",
+            "args": true,
+            "cmd": "node"
+          }
+        ]
       }
     },
     "bundle": {

@@ -15,6 +15,10 @@ const router = createRouter({
       path: "/issue-fix",
       component: () => import('../views/IssueFix.vue')
     },
+    {
+      path: "/download",
+      component: () => import('../views/DownloadPage.vue')
+    }
   ]
 })
 

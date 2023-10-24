@@ -1,19 +1,38 @@
 <template>
-  <div :class="{'not-win11':notWin11}">
-    <NormalPage/>
-  </div>
+  <a-app>
+    <a-float-button
+      type="primary"
+      tooltip="启动云崽"
+      @click="startYunzai"
+    >
+      <template #icon>
+        <right-circle-outlined/>
+      </template>
+    </a-float-button>
+    <div :class="{'not-win11':notWin11}">
+      <NormalPage/>
+    </div>
+  </a-app>
 </template>
 
 <script setup lang="ts">
+import {RightCircleOutlined} from '@ant-design/icons-vue';
 import NormalPage from "./views/IndexPage.vue";
 import {onMounted, ref} from "vue";
+import {Command} from '@tauri-apps/api/shell'
 
 let notWin11 = ref(true);
+import {yunzaiDir} from "./entity/hyzlPath.ts";
+
 import {version} from '@tauri-apps/api/os';
 
 onMounted(async () => {
   changeWhenNotWin11()
 });
+
+async function startYunzai() {
+  new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {cwd: await yunzaiDir()}).spawn();
+}
 
 async function changeWhenNotWin11() {
   const osVersion = await version();
