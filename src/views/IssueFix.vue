@@ -11,7 +11,7 @@
 import NormalContent from "./NormalContent.vue";
 import {message} from "ant-design-vue";
 import {invoke} from "@tauri-apps/api/tauri";
-import {DataResponse} from "../entity/response.ts";
+import {DataResponse} from "@/entity/response.ts";
 
 const reinstallDependence = async () => {
   const key = '重装依赖'

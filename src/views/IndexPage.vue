@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import SideBar from "./SideBar.vue";
-import router from "../router";
+import router from "@/router";
 
 const handleChangeSelect = (value: Array<string>) => {
   //修改路由

@@ -1,23 +1,23 @@
 <template>
   <a-app>
-    <a-float-button
-      type="primary"
-      tooltip="启动云崽"
-      @click="startYunzai"
-    >
-      <template #icon>
-        <right-circle-outlined/>
-      </template>
-    </a-float-button>
     <div :class="{'not-win11':notWin11}">
-      <NormalPage/>
+      <a-float-button
+        type="primary"
+        tooltip="启动云崽"
+        @click="startYunzai"
+      >
+        <template #icon>
+          <right-circle-outlined/>
+        </template>
+      </a-float-button>
+      <IndexPage/>
     </div>
   </a-app>
 </template>
 
 <script setup lang="ts">
 import {RightCircleOutlined} from '@ant-design/icons-vue';
-import NormalPage from "./views/IndexPage.vue";
+import IndexPage from "./views/IndexPage.vue";
 import {onMounted, ref} from "vue";
 import {Command} from '@tauri-apps/api/shell'
 

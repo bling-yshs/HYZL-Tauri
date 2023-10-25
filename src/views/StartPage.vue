@@ -34,7 +34,7 @@
 import NormalContent from "./NormalContent.vue";
 import {createDir} from '@tauri-apps/api/fs';
 import {invoke} from "@tauri-apps/api/tauri";
-import {DataResponse} from "../entity/response.ts";
+import {DataResponse} from "@/entity/response.ts";
 import {download} from "tauri-plugin-upload-api";
 import {ref} from "vue";
 import {message} from 'ant-design-vue';
@@ -44,7 +44,7 @@ let isDownloading = ref(false)
 //下载测试
 
 import {path} from "@tauri-apps/api";
-import {appDir} from "../entity/hyzlPath.ts";
+import {appDir} from "@/entity/hyzlPath.ts";
 
 const downloadTest = async () => {
   message.info('开始下载')
