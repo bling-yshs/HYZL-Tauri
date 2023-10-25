@@ -21,33 +21,16 @@
           <span>下载</span>
         </a-menu-item>
         <a-menu-item key="/issue-fix">
-          <desktop-outlined/>
+          <bug-outlined/>
           <span>问题修复</span>
         </a-menu-item>
-        <a-sub-menu key="sub1">
-          <template #title>
-            <span>
-              <user-outlined/>
-              <span>User</span>
-            </span>
-          </template>
-          <a-menu-item key="3">Tom</a-menu-item>
-          <a-menu-item key="4">Bill</a-menu-item>
-          <a-menu-item key="5">Alex</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2">
-          <template #title>
-            <span>
-              <team-outlined/>
-              <span>Team</span>
-            </span>
-          </template>
-          <a-menu-item key="6">Team 1</a-menu-item>
-          <a-menu-item key="8">Team 2</a-menu-item>
-        </a-sub-menu>
         <a-menu-item key="/settings">
           <SettingOutlined/>
           <span>设置</span>
+        </a-menu-item>
+        <a-menu-item key="/about">
+          <info-circle-outlined/>
+          <span>关于</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -55,9 +38,9 @@
 </template>
 <script lang="ts" setup>
 import {
+  InfoCircleOutlined,
   DesktopOutlined,
-  UserOutlined,
-  TeamOutlined,
+  BugOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   RocketOutlined,
