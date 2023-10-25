@@ -1,18 +1,20 @@
 <template>
-  <a-app>
-    <div :class="{'not-win11':notWin11}">
-      <a-float-button
-        type="primary"
-        tooltip="启动云崽"
-        @click="startYunzai"
-      >
-        <template #icon>
-          <right-circle-outlined/>
-        </template>
-      </a-float-button>
-      <IndexPage/>
-    </div>
-  </a-app>
+  <Suspense>
+    <a-app>
+      <div :class="{'not-win11':notWin11}">
+        <a-float-button
+          type="primary"
+          tooltip="启动云崽"
+          @click="startYunzai"
+        >
+          <template #icon>
+            <right-circle-outlined/>
+          </template>
+        </a-float-button>
+        <IndexPage/>
+      </div>
+    </a-app>
+  </Suspense>
 </template>
 
 <script setup lang="ts">
@@ -23,9 +25,7 @@ import {Command} from '@tauri-apps/api/shell'
 
 let notWin11 = ref(true);
 import {yunzaiDir} from "./entity/hyzlPath.ts";
-
 import {version} from '@tauri-apps/api/os';
-
 onMounted(async () => {
   changeWhenNotWin11()
 });

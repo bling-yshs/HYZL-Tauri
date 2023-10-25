@@ -2,3 +2,7 @@
 ::-webkit-scrollbar {
     display: none;
 }
+
+p {
+    margin: 0;
+}
