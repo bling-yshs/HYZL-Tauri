@@ -1,11 +1,11 @@
 <template>
-  <NormalContent>
+  <normal-content>
     <a-space direction="vertical">
       <a-space direction="horizontal">
         <a-button type="default" @click="reinstallDependence">重装依赖</a-button>
       </a-space>
     </a-space>
-  </NormalContent>
+  </normal-content>
 </template>
 <script setup lang="ts">
 import NormalContent from "./NormalContent.vue";
