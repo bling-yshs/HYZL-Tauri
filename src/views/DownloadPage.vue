@@ -18,13 +18,38 @@
 
 import NormalContent from "./NormalContent.vue";
 import {message} from 'ant-design-vue';
+import {Command} from "@tauri-apps/api/shell";
+import {appDir} from "@/entity/hyzlPath.ts";
 
 async function downloadUFQ() {
-  message.info("暂未制作")
+  let downloadKey = '下载签名API'
+  message.loading({content: '正在下载签名API', key: downloadKey, duration: 0});
+  const command = new Command('git', ['clone', '--depth', '1', 'https://github.com/bling-yshs/HYZL-Tauri.git'], {cwd: await appDir()});
+  command.on('close', (code) => {
+    if (code.code === 128) {
+      message.error({content: '签名API文件夹已存在', key: downloadKey, duration: 2});
+    }
+    if (code.code === 0) {
+      message.success({content: '下载签名API成功', key: downloadKey, duration: 2})
+    }
+  })
+  command.spawn();
+  
 }
 
 async function downloadMiaoYunzai() {
-  message.info("暂未制作")
+  let downloadKey = '下载喵喵云崽'
+  message.loading({content: '正在下载喵喵云崽', key: downloadKey, duration: 0});
+  const command = new Command('git', ['clone', '--depth', '1', 'https://gitee.com/yoimiya-kokomi/Miao-Yunzai.git'], {cwd: await appDir()});
+  command.on('close', (code) => {
+    if (code.code === 128) {
+      message.error({content: '喵喵云崽文件夹已存在', key: downloadKey, duration: 2});
+    }
+    if (code.code === 0) {
+      message.success({content: '下载喵喵云崽成功', key: downloadKey, duration: 2})
+    }
+  })
+  command.spawn();
 }
 </script>
 
