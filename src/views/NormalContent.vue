@@ -10,7 +10,7 @@
 
 <style scoped>
 .normal-content {
-  padding: 0.5rem;
+  padding: 0.7rem;
   background-color: #f9f9fc;
   margin: 0.5rem;
   border-radius: 0.5rem;
