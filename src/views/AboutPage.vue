@@ -5,7 +5,7 @@
         <a-col :span="24">
           <a-image
             :preview="false"
-            style="border-radius: 0.5rem"
+            style="border-radius: 0.5rem;object-fit: cover;"
             :src="aboutImage"
           />
         </a-col>
