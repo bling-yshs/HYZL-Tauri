@@ -20,7 +20,6 @@ fn main() {
                 Ok(_) => (),
                 Err(_) => ()
             }
-            window.set_decorations(true).unwrap();
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

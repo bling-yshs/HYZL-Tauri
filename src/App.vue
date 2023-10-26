@@ -11,7 +11,6 @@
             <right-circle-outlined/>
           </template>
         </a-float-button>
-        
         <IndexPage/>
       </div>
     </a-app>
@@ -27,11 +26,12 @@ import {fetch} from '@tauri-apps/api/http';
 import {writeTextFile, exists, readTextFile} from '@tauri-apps/api/fs';
 import {getAnnouncementPath} from "@/entity/hyzlPath.ts";
 import {Modal} from 'ant-design-vue';
-
+import { appWindow } from '@tauri-apps/api/window';
 
 // 公告
 onMounted(async () => {
   await getAnnouncement()
+  await appWindow.setDecorations(true);
 });
 interface announcement {
   version: number,
