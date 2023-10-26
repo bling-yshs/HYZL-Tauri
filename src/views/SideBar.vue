@@ -17,12 +17,16 @@
           <span>主页</span>
         </a-menu-item>
         <a-menu-item key="/download">
-          <desktop-outlined/>
+          <cloud-download-outlined/>
           <span>下载</span>
         </a-menu-item>
         <a-menu-item key="/issue-fix">
           <bug-outlined/>
           <span>问题修复</span>
+        </a-menu-item>
+        <a-menu-item key="/debug">
+          <desktop-outlined/>
+          <span>调试</span>
         </a-menu-item>
         <a-menu-item key="/settings">
           <SettingOutlined/>
@@ -38,6 +42,7 @@
 </template>
 <script lang="ts" setup>
 import {
+  CloudDownloadOutlined,
   InfoCircleOutlined,
   DesktopOutlined,
   BugOutlined,

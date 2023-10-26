@@ -12,12 +12,16 @@ const router = createRouter({
       component: () => import('../views/StartPage.vue')
     },
     {
+      path: "/download",
+      component: () => import('../views/DownloadPage.vue')
+    },
+    {
       path: "/issue-fix",
       component: () => import('../views/IssueFix.vue')
     },
     {
-      path: "/download",
-      component: () => import('../views/DownloadPage.vue')
+      path: "/debug",
+      component: () => import('../views/DebugPage.vue')
     },
     {
       path: "/settings",
@@ -26,7 +30,7 @@ const router = createRouter({
     {
       path: "/about",
       component: () => import('../views/AboutPage.vue')
-    }
+    },
   ]
 })
 
