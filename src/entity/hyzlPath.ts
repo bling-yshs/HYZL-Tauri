@@ -2,7 +2,14 @@ import {appDataDir, join} from "@tauri-apps/api/path";
 
 let cachedHyzlDir: string | null = null;
 
-export const appDir = async (): Promise<string> => cachedHyzlDir ? cachedHyzlDir : cachedHyzlDir = await appDataDir();
+export const getAppDir = async (): Promise<string> => cachedHyzlDir ? cachedHyzlDir : cachedHyzlDir = await appDataDir();
 
 let cachedYunzaiDir: string | null = null;
-export const yunzaiDir = async (): Promise<string> => cachedYunzaiDir ? cachedYunzaiDir : cachedYunzaiDir = await join(await appDir(), "Miao-Yunzai");
+export const getYunzaiDir = async (): Promise<string> => cachedYunzaiDir ? cachedYunzaiDir : cachedYunzaiDir = await join(await getAppDir(), "Miao-Yunzai");
+
+let cachedAnnouncementDir: string | null = null;
+export const getAnnouncementDir = async (): Promise<string> => cachedAnnouncementDir ? cachedAnnouncementDir : cachedAnnouncementDir = await join(await getAppDir(), "hyzl-announcement");
+
+// 公告路径
+let cachedAnnouncementPath: string | null = null;
+export const getAnnouncementPath = async (): Promise<string> => cachedAnnouncementPath ? cachedAnnouncementPath : cachedAnnouncementPath = await join(await getAnnouncementDir(), "announcement.json");

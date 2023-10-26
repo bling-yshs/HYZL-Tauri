@@ -1,15 +1,21 @@
 import {createDir, exists} from "@tauri-apps/api/fs";
-import {appDir} from "@/entity/hyzlPath.ts";
+import {getAppDir, getAnnouncementDir} from "@/entity/hyzlPath.ts";
 
 
 async function init() {
   await createAppDir()
+  await createAnnouncementDir()
 }
 
-async function createAppDir(){
-  let appData = await appDir()
-  if (!await exists(appData)) {
-    await createDir(appData, {recursive: true})
+async function createAnnouncementDir() {
+  if (!await exists(await getAnnouncementDir())) {
+    await createDir(await getAnnouncementDir(), {recursive: true})
+  }
+}
+
+async function createAppDir() {
+  if (!await exists(await getAppDir())) {
+    await createDir(await getAppDir(), {recursive: true})
   }
 }
 

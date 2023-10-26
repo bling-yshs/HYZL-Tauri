@@ -1,16 +1,17 @@
 <template>
-  <Suspense>
-    <a-app>
+  <Suspense> <!--全局异步挂载-->
+    <a-app> <!--全局挂载 message-->
       <div :class="{'not-win11':notWin11}">
         <a-float-button
           type="primary"
           tooltip="启动云崽"
           @click="startYunzai"
-        >
+        > <!--全局悬浮按钮 -->
           <template #icon>
             <right-circle-outlined/>
           </template>
         </a-float-button>
+        
         <IndexPage/>
       </div>
     </a-app>
@@ -22,22 +23,66 @@ import {RightCircleOutlined} from '@ant-design/icons-vue';
 import IndexPage from "./views/IndexPage.vue";
 import {onMounted, ref} from "vue";
 import {Command} from '@tauri-apps/api/shell'
+import {fetch} from '@tauri-apps/api/http';
+import {writeTextFile, exists, readTextFile} from '@tauri-apps/api/fs';
+import {getAnnouncementPath} from "@/entity/hyzlPath.ts";
+import {Modal} from 'ant-design-vue';
 
+
+// 公告
+onMounted(async () => {
+  await getAnnouncement()
+});
+interface announcement {
+  version: number,
+  content: string
+}
+async function getAnnouncement() {
+  const response = (await fetch('https://gist.githubusercontent.com/bling-yshs/70898cb0d69bef4c16cf7823a1a767b5/raw/', {
+    method: 'GET',
+    headers: {
+      'Cache-Control': 'no-cache'
+    }
+  })).data as announcement;
+  if (!await exists(await getAnnouncementPath())) {
+    await writeTextFile(await getAnnouncementPath(), JSON.stringify(response));
+    console.log('初始化公告文件成功')
+  } else {
+    //读取文件，比较版本号
+    const latestVersion = response.version;
+    const localData = (JSON.parse(await readTextFile(await getAnnouncementPath())) as announcement).version;
+    if (latestVersion <= localData) {
+      console.log('公告已是最新')
+      return
+    }
+  }
+  // 展示公告
+  Modal.info({
+    title: '发现新公告',
+    content: response.content,
+    okText: '我知道了',
+  });
+  await writeTextFile(await getAnnouncementPath(), JSON.stringify(response));
+}
+
+// mica背景
 let notWin11 = ref(true);
-import {yunzaiDir} from "./entity/hyzlPath.ts";
+import {getYunzaiDir} from "./entity/hyzlPath.ts";
 import {version} from '@tauri-apps/api/os';
 onMounted(async () => {
   changeWhenNotWin11()
 });
-
-async function startYunzai() {
-  new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {cwd: await yunzaiDir()}).spawn();
-}
-
 async function changeWhenNotWin11() {
   const osVersion = await version();
   Number(osVersion.split('.')[2]) > 22000 ? notWin11.value = false : notWin11.value = true
 }
+
+// 全局启动按钮
+async function startYunzai() {
+  new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {cwd: await getYunzaiDir()}).spawn();
+}
+
+
 </script>
 <style scoped>
 .not-win11 {
