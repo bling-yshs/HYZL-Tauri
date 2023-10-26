@@ -44,12 +44,12 @@ let isDownloading = ref(false)
 //下载测试
 
 import {path} from "@tauri-apps/api";
-import {appDir} from "@/entity/hyzlPath.ts";
+import {getAppDir} from "@/entity/hyzlPath.ts";
 
 const downloadTest = async () => {
   message.info('开始下载')
-  await createDir(await appDir(), {recursive: true})
-  const svgPath = await path.join(await appDir(), 't01.svg');
+  await createDir(await getAppDir(), {recursive: true})
+  const svgPath = await path.join(await getAppDir(), 't01.svg');
   isDownloading.value = true
   downloadPercent.value = 0
   await download(
