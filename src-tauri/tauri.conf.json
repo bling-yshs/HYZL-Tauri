@@ -27,6 +27,11 @@
       "shell": {
         "scope": [
           {
+            "name": "ps",
+            "args": true,
+            "cmd": "powershell"
+          },
+          {
             "name": "cmd",
             "args": true,
             "cmd": "cmd"

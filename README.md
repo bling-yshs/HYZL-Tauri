@@ -1,25 +1,5 @@
-# tauri-example-vue3-ts-vite-ant-design
+# Hello Yunzai Launcher
 
-tauri-example-vue3-ts-vite-ant-design. 一个 tauri 例子，使用 vue3 + typescript + vite + ant-design
+## 🛠️ 正在开发中...
 
-## ⚠️ Only tested on Windows
-
-### Usage
-
-#### 📦 Install Dependencies: use pnpm
-
-```bash
-pnpm install
-```
-
-#### ▶️ Run
-
-```bash
-pnpm tauri-dev
-```
-
-#### 🏗️ Build
-
-```bash
-pnpm tauri-build
-```
+## 🚀 [下载 CI 测试版](https://github.com/bling-yshs/HYZL-Tauri/releases/tag/v9.9.9)
