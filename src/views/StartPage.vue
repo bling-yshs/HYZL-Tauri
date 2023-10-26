@@ -1,6 +1,17 @@
 <template>
   <div>
     <normal-content>
+      <a-space direction="vertical">
+        <a-row>
+          <a-col :span="24">
+            <a-image
+              :preview="false"
+              style="border-radius: 0.5rem;object-fit: cover;"
+              :src="indexImage"
+            />
+          </a-col>
+        </a-row>
+      
       <a-row>
         <a-col :span="24">
           <a-progress v-if="isDownloading" :percent="downloadPercent" size="300"/>
@@ -17,16 +28,8 @@
             </a-space>
           </a-space>
         </a-col>
-        <a-col :span="8">
-          123
-        </a-col>
       </a-row>
-      <a-row>
-        123
-      </a-row>
-      <a-row>
-        233
-      </a-row>
+      </a-space>
     </normal-content>
   </div>
 </template>
@@ -45,6 +48,7 @@ let isDownloading = ref(false)
 
 import {path} from "@tauri-apps/api";
 import {getAppDir} from "@/entity/hyzlPath.ts";
+import indexImage from "@/assets/index-iamge.jpg";
 
 const downloadTest = async () => {
   message.info('开始下载')
