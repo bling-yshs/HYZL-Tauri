@@ -3,7 +3,7 @@
   </normal-content>
 </template>
 <script setup lang="ts">
-import NormalContent from "./NormalContent.vue";
+import NormalContent from "@/component/NormalContent.vue"
 </script>
 
 <style scoped>

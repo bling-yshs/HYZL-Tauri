@@ -120,7 +120,7 @@ import {getVersion} from '@tauri-apps/api/app';
 const appVersion = await getVersion();
 
 import {open} from '@tauri-apps/api/shell';
-import NormalContent from "./NormalContent.vue";
+import NormalContent from "@/component/NormalContent.vue"
 import Icon, {
   GithubFilled,
   RightOutlined
