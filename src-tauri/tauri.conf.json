@@ -14,10 +14,15 @@
     "allowlist": {
       "all": true,
       "http": {
-        "scope": ["https://*", "http://*"]
+        "scope": [
+          "https://*",
+          "http://*"
+        ]
       },
       "fs": {
-        "scope": ["**"]
+        "scope": [
+          "**"
+        ]
       },
       "shell": {
         "scope": [
@@ -64,7 +69,10 @@
       },
       "resources": [],
       "shortDescription": "",
-      "targets": ["msi","updater"],
+      "targets": [
+        "msi",
+        "updater"
+      ],
       "windows": {
         "wix": {
           "language": "zh-CN"
@@ -79,7 +87,9 @@
     },
     "updater": {
       "active": true,
-      "endpoints": ["https://github.com/bling-yshs/HYZL-Tauri/releases/download/latest/latest.json"],
+      "endpoints": [
+        "https://github.com/bling-yshs/HYZL-Tauri/releases/download/latest/latest.json"
+      ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEVBRUYzM0I5RjAxRjhCQjEKUldTeGl4L3d1VFB2NnFqSXdOTFB4WUR1WHhJeHZXbXFHYmR0bTh0MGhMbDVDNGFselZtSHNWWFkK"
     },
@@ -93,7 +103,17 @@
         "width": 900,
         "label": "main",
         "decorations": false,
-        "transparent": true
+        "transparent": true,
+        "visible": false
+      },
+      {
+        "transparent": true,
+        "center": true,
+        "width": 128,
+        "height": 128,
+        "decorations": false,
+        "url": "splashscreen.html",
+        "label": "splashscreen"
       }
     ]
   }
