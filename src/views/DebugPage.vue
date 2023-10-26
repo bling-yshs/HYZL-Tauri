@@ -75,7 +75,7 @@
 </template>
 <script setup lang="ts">
 import icon, {FolderOpenOutlined, SendOutlined} from '@ant-design/icons-vue';
-import NormalContent from "./NormalContent.vue";
+import NormalContent from "@/component/NormalContent.vue"
 import {message} from "ant-design-vue";
 import {Child, Command, open} from '@tauri-apps/api/shell';
 import {getYunzaiDir, getSignApiDir} from "@/entity/hyzlPath.ts";

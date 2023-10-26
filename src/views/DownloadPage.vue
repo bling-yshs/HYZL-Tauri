@@ -16,7 +16,7 @@
 </template>
 <script setup lang="ts">
 
-import NormalContent from "./NormalContent.vue";
+import NormalContent from "@/component/NormalContent.vue"
 import {message} from 'ant-design-vue';
 import {Command} from "@tauri-apps/api/shell";
 import {getAppDir} from "@/entity/hyzlPath.ts";

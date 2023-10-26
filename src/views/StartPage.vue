@@ -34,7 +34,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import NormalContent from "./NormalContent.vue";
+import NormalContent from "@/component/NormalContent.vue";
 import {createDir} from '@tauri-apps/api/fs';
 import {invoke} from "@tauri-apps/api/tauri";
 import {DataResponse} from "@/entity/response.ts";

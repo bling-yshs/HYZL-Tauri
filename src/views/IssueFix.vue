@@ -8,7 +8,7 @@
   </normal-content>
 </template>
 <script setup lang="ts">
-import NormalContent from "./NormalContent.vue";
+import NormalContent from "@/component/NormalContent.vue"
 import {message} from "ant-design-vue";
 import {invoke} from "@tauri-apps/api/tauri";
 import {DataResponse} from "@/entity/response.ts";
