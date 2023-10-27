@@ -20,24 +20,14 @@ fn main() {
                 Ok(_) => (),
                 Err(_) => ()
             }
+            window.set_decorations(true).unwrap();
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            close_splashscreen,
             page::start::start::start_yunzai_and_api,
             page::issue_fix::issue_fix::reinstall_dependence,
             page::start::start::start_yunzai,
             page::start::start::download_sign_api])
         .run(tauri::generate_context!())
         .expect("error while running tauri application")
-}
-
-#[tauri::command]
-async fn close_splashscreen(window: tauri::Window) {
-    // Close splashscreen
-    if let Some(splashscreen) = window.get_window("splashscreen") {
-        splashscreen.close().unwrap();
-    }
-    // Show main window
-    window.get_window("main").unwrap().show().unwrap();
 }

@@ -108,17 +108,7 @@
         "width": 900,
         "label": "main",
         "decorations": false,
-        "transparent": true,
-        "visible": false
-      },
-      {
-        "transparent": true,
-        "center": true,
-        "width": 128,
-        "height": 128,
-        "decorations": false,
-        "url": "splashscreen.html",
-        "label": "splashscreen"
+        "transparent": true
       }
     ]
   }
