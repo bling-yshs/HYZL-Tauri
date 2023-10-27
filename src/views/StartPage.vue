@@ -11,74 +11,65 @@
             />
           </a-col>
         </a-row>
-      
-      <a-row>
-        <a-col :span="24">
-          <a-progress v-if="isDownloading" :percent="downloadPercent" size="300"/>
-        </a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="8">
-          <a-space direction="vertical">
-            <a-space direction="horizontal">
-              <a-button type="primary" @click="startWithApi">启动云崽&签名API</a-button>
-              <a-button type="default" @click="downloadTest">
-                Test
-              </a-button>
-            </a-space>
+        <a-space>
+          <CodeOutlined/>
+          <p>日志</p>
+        </a-space>
+        <a-textarea
+          :rows="5"
+          readonly
+          :value="terminalText"
+          placeholder="欢迎使用 HYZL-Tauri"
+          id="terminal"
+        >
+        </a-textarea>
+        <a-space style="display: flex; justify-content: space-between;">
+          <a-space>
+            <a-button type="primary" @click="startYunzai">启动云崽</a-button>
+            <a-checkbox v-model:checked="isStartWithSignApi">同时启动签名API</a-checkbox>
+            <a-tooltip title="会在命令行窗口中打开云崽">
+              <a-checkbox v-model:checked="isOriginWindow">原生窗口</a-checkbox>
+            </a-tooltip>
           </a-space>
-        </a-col>
-      </a-row>
+          <a-space>
+            <a-button>云崽日志</a-button>
+            <a-button @click="killYunzaiProcess" danger>停止云崽</a-button>
+          </a-space>
+        </a-space>
       </a-space>
     </normal-content>
   </div>
 </template>
 <script setup lang="ts">
-import NormalContent from "@/component/NormalContent.vue";
-import {createDir} from '@tauri-apps/api/fs';
-import {invoke} from "@tauri-apps/api/tauri";
-import {DataResponse} from "@/entity/response.ts";
-import {download} from "tauri-plugin-upload-api";
-import {ref} from "vue";
-import {message} from 'ant-design-vue';
-
-let downloadPercent = ref(0)
-let isDownloading = ref(false)
-//下载测试
-
-import {path} from "@tauri-apps/api";
-import {getAppDir} from "@/entity/hyzlPath.ts";
+import {CodeOutlined} from '@ant-design/icons-vue';
+import NormalContent from "@/component/NormalContent.vue"
 import indexImage from "@/assets/index-iamge.jpg";
+import {ref} from "vue";
+import {Child, Command} from "@tauri-apps/api/shell";
+import {getYunzaiDir} from "@/entity/hyzlPath.ts";
+import checkProcessExist from "@/utils/checkProcessExist.ts";
+import {message} from "ant-design-vue";
 
-const downloadTest = async () => {
-  message.info('开始下载')
-  await createDir(await getAppDir(), {recursive: true})
-  const svgPath = await path.join(await getAppDir(), 't01.svg');
-  isDownloading.value = true
-  downloadPercent.value = 0
-  await download(
-    "https://tauri.app/meta/tauri_logo_light.svg",
-    svgPath,
-    (progress, total) => {
-      downloadPercent.value += progress / total * 100
-    },
-  );
-  setTimeout(() => {
-    isDownloading.value = false
-  }, 2000)
+let tempYunzaiProcess: Child = new Child(31113);
+let terminalText = ref('')
+let isStartWithSignApi = ref(false)
+let isOriginWindow = ref(false)
+
+async function startYunzai() {
+  const yunzai = new Command('node', 'app', {cwd: await getYunzaiDir()});
+  yunzai.stdout.on('data', (data) => {
+    terminalText.value += data;
+  })
+  tempYunzaiProcess = await yunzai.spawn();
 }
 
 
-// 启动云崽 & 签名API
-const startWithApi = async () => {
-  const response = await invoke('start_yunzai_and_api');
-  const res = JSON.parse(response as string) as DataResponse
-  if (res.code === 200) {
-    message.success(res.message)
-    return
+async function killYunzaiProcess() {
+  if (await checkProcessExist(tempYunzaiProcess.pid)) {
+    tempYunzaiProcess.kill();
+    message.success({content: '成功停止云崽', duration: 2})
   } else {
-    message.error('启动失败')
-    return
+    message.error({content: '当前没有正在运行的云崽', duration: 2})
   }
 }
 </script>
