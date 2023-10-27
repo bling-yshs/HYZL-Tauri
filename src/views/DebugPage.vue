@@ -1,59 +1,51 @@
 <template>
   <div>
     <normal-content>
-      <div class="terminalTitle">
-        <icon>
-          <template #component>
-            <svg width="1em" height="1em" viewBox="0 0 1024 1024">
-              <path
-                  d="M512 640h256v85.333333h-256zM243.2 631.466667l59.733333 59.733333 179.2-179.2-179.2-179.2-59.733333 59.733333L362.666667 512z"
-                  fill="#09121F"/>
-              <path
-                  d="M896 128H128c-25.6 0-42.666667 17.066667-42.666667 42.666667v682.666666c0 25.6 17.066667 42.666667 42.666667 42.666667h768c25.6 0 42.666667-17.066667 42.666667-42.666667V170.666667c0-25.6-17.066667-42.666667-42.666667-42.666667z m-42.666667 682.666667H170.666667V213.333333h682.666666v597.333334z"
-                  fill="#09121F"/>
-            </svg>
-          </template>
-        </icon>
-        <p>云崽终端</p>
-        <a-button
-            @click="killCommandProcess"
-            danger
-            style="margin-left: auto"
-        >
-          终止当前命令
-        </a-button>
-      </div>
-      <a-textarea
+      <a-space direction="vertical" style="width: 100%">
+        <a-space>
+          <CodeOutlined/>
+          <p>云崽终端</p>
+        </a-space>
+        <a-textarea
           :rows="10"
           readonly
           :value="terminalText"
           placeholder="欢迎使用 HYZL-Tauri"
-          style="margin-bottom: 0.5rem"
           id="terminal"
-      >
-      </a-textarea>
-      <a-space-compact block>
-        <a-input
+        >
+        </a-textarea>
+        <a-space-compact block>
+          <a-input
             :allowClear="true"
             v-model:value="commandText"
             placeholder="在这里输入命令"
             @pressEnter="submitCommand"
-        >
-          <template #enterButton>
-            <a-button>
-              发送
-              <send-outlined/>
-            </a-button>
-          </template>
-        </a-input>
-        <a-button @click="copyTerminalLog">
-          复制终端日志
-        </a-button>
-        <a-button type="primary" @click="submitCommand">
-          <send-outlined/>
-          发送
-        </a-button>
-      </a-space-compact>
+          >
+            <template #enterButton>
+              <a-button>
+                发送
+                <send-outlined/>
+              </a-button>
+            </template>
+          </a-input>
+          <a-button type="primary" @click="submitCommand">
+            <send-outlined/>
+            发送
+          </a-button>
+        </a-space-compact>
+        <a-space style="display: flex; justify-content: space-between;">
+          <a-button @click="copyTerminalLog">
+            复制终端日志
+          </a-button>
+          <a-button
+            @click="killCommandProcess"
+            danger
+            style="margin-left: auto"
+          >
+            终止当前命令
+          </a-button>
+        </a-space>
+      </a-space>
     </normal-content>
     <normal-content>
       <a-row>
@@ -74,7 +66,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import icon, {FolderOpenOutlined, SendOutlined} from '@ant-design/icons-vue';
+import {FolderOpenOutlined, SendOutlined, CodeOutlined} from '@ant-design/icons-vue';
 import NormalContent from "@/component/NormalContent.vue"
 import {message} from "ant-design-vue";
 import {Child, Command, open} from '@tauri-apps/api/shell';
@@ -146,7 +138,8 @@ watch(tempCommandProcess, async (newProcess) => {
 })
 
 async function copyTerminalLog() {
-  writeText(terminalText.value)
+  await writeText(terminalText.value)
+  message.success({content: '复制成功', duration: 2})
 }
 
 //打开文件夹
@@ -168,16 +161,5 @@ async function openYunzaiFolder() {
 </script>
 
 <style scoped>
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.terminalTitle {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
 
 </style>
