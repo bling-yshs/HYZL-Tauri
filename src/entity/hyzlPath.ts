@@ -15,4 +15,4 @@ export const getAnnouncementPath = async (): Promise<string> => cachedAnnounceme
 
 // 签名API路径
 let cachedSignApiPath: string | null = null;
-export const getSignApiDir = async (): Promise<string> => cachedSignApiPath ? cachedSignApiPath : cachedSignApiPath = await join(await getYunzaiDir(), "hyzl-sign-api");
+export const getSignApiDir = async (): Promise<string> => cachedSignApiPath ? cachedSignApiPath : cachedSignApiPath = await join(await getAppDir(), "hyzl-sign-api");

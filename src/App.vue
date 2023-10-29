@@ -2,15 +2,6 @@
   <Suspense> <!--全局异步挂载-->
     <a-app> <!--全局挂载 message-->
       <div :class="{'not-win11':notWin11}">
-        <a-float-button
-          type="primary"
-          tooltip="启动云崽"
-          @click="startYunzai"
-        > <!--全局悬浮按钮 -->
-          <template #icon>
-            <right-circle-outlined/>
-          </template>
-        </a-float-button>
         <IndexPage/>
       </div>
     </a-app>
@@ -18,10 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import {RightCircleOutlined} from '@ant-design/icons-vue';
 import IndexPage from "./views/IndexPage.vue";
 import {onMounted, ref} from "vue";
-import {Command} from '@tauri-apps/api/shell'
 import {fetch} from '@tauri-apps/api/http';
 import {writeTextFile, exists, readTextFile} from '@tauri-apps/api/fs';
 import {getAnnouncementPath} from "@/entity/hyzlPath.ts";
@@ -67,7 +56,6 @@ async function getAnnouncement() {
 
 // mica背景
 let notWin11 = ref(true);
-import {getYunzaiDir} from "./entity/hyzlPath.ts";
 import {version} from '@tauri-apps/api/os';
 onMounted(async () => {
   changeWhenNotWin11()
@@ -75,11 +63,6 @@ onMounted(async () => {
 async function changeWhenNotWin11() {
   const osVersion = await version();
   Number(osVersion.split('.')[2]) > 22000 ? notWin11.value = false : notWin11.value = true
-}
-
-// 全局启动按钮
-async function startYunzai() {
-  new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {cwd: await getYunzaiDir()}).spawn();
 }
 
 

@@ -1,5 +1,6 @@
 import {createDir, exists} from "@tauri-apps/api/fs";
 import {getAppDir, getAnnouncementDir} from "@/entity/hyzlPath.ts";
+
 async function init() {
   await createAppDir()
   await createAnnouncementDir()
