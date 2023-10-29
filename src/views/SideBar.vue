@@ -7,8 +7,10 @@
     >
       <!--<a-button @click="testFn"></a-button>-->
       <a-button type="text" @click="() => {collapsed = !collapsed}">
-        <menu-unfold-outlined v-if="collapsed"/>
-        <menu-fold-outlined v-else/>
+        <Transition mode="out-in" name="slide-fade">
+          <menu-unfold-outlined v-if="collapsed"/>
+          <menu-fold-outlined v-else/>
+        </Transition>
       </a-button>
       <!--菜单-->
       <a-menu style="border-right: 0" v-model:selectedKeys="selectedKeys" theme="light" mode="inline">
@@ -80,12 +82,49 @@ watch(() => selectedKeys.value, (value) => {
 
 </script>
 <style scoped>
-.parent-element {
+.parent-element, .parent-element * {
   background-color: transparent;
+}
+.slide-fade-leave-active {
+  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+  animation: rotateOut 0.1s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
-.parent-element * {
-  background-color: transparent;
+.slide-fade-leave-to {
+  transform: rotate(360deg);
+  opacity: 0;
 }
+
+.slide-fade-enter-from {
+  transform: rotate(360deg);
+  opacity: 0;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+  animation: rotateIn 0.3s ease-out;
+}
+
+@keyframes rotateOut {
+  from {
+    transform: none;
+  }
+  to {
+    transform: rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    transform: rotate(360deg);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
 
 </style>
