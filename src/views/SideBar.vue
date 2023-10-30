@@ -56,8 +56,11 @@ import {
 import {onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router'
 
+
 // const testFn = () => {
-//   console.log(route.fullPath)
+//   const webview = new WebviewWindow('theUniqueLabel', {
+//     url: './issue-fix'
+//   });
 // };
 
 // 收放按钮
