@@ -3,15 +3,26 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
-mod entity;
-mod utils;
-mod page;
-
 use tauri::Manager;
-use window_vibrancy::{ apply_mica};
+use window_vibrancy::apply_mica;
+
+mod entity;
+
+#[derive(Clone, serde::Serialize)]
+struct Payload {
+    args: Vec<String>,
+    cwd: String,
+}
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+            let window = app.get_window("main").unwrap();
+            window.unminimize().unwrap();
+            window.set_focus().unwrap();
+            println!("{}, {argv:?}, {cwd}", app.package_info().name);
+            app.emit_all("single-instance", Payload { args: argv, cwd }).unwrap();
+        }))
         .plugin(tauri_plugin_upload::init())
         .setup(|app| {
             let window = app.get_window("main").unwrap();
@@ -24,10 +35,8 @@ fn main() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            page::start::start::start_yunzai_and_api,
-            page::issue_fix::issue_fix::reinstall_dependence,
-            page::start::start::start_yunzai,
-            page::start::start::download_sign_api])
+            // page::start::start::start_yunzai_and_api,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application")
 }
