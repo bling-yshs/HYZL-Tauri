@@ -5,9 +5,6 @@ windows_subsystem = "windows"
 
 use tauri::Manager;
 use window_vibrancy::apply_mica;
-
-mod entity;
-
 #[derive(Clone, serde::Serialize)]
 struct Payload {
     args: Vec<String>,
