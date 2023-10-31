@@ -1,0 +1,18 @@
+name: test
+run-name: "自定义测试: (${{ github.event.head_commit.message }})"
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release-gitee:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
