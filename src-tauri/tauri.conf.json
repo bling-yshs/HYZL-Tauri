@@ -93,7 +93,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://github.com/bling-yshs/HYZL-Tauri/releases/download/latest/latest.json"
+        "https://ghproxy.com/https://github.com/bling-yshs/HYZL-Tauri/releases/latest/download/latest.json"
       ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEVBRUYzM0I5RjAxRjhCQjEKUldTeGl4L3d1VFB2NnFqSXdOTFB4WUR1WHhJeHZXbXFHYmR0bTh0MGhMbDVDNGFselZtSHNWWFkK"
