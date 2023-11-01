@@ -36,4 +36,7 @@ jobs:
           git add .
           git commit -m "github action auto release"
           git remote add target https://bling_yshs:${TOKEN}@gitee.com/bling_yshs/hyzl-tauri-update
+          echo "-------------------------------------Where am I--------------------------------------------"
+            pwd
+            ls
           git push -f --all target
