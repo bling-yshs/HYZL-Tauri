@@ -1,0 +1,31 @@
+name: test
+run-name: "自定义测试: (${{ github.event.head_commit.message }})"
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  ci-build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload release to gitee
+        run: |
+          mkdir app
+          cd ./app
+          touch newTest.txt
+          git config --global user.name "bling_yshs"
+          git config --global user.email "377178599@qq.com"
+          git init
+          git add .
+          echo "output-------------------------------------------------"
+          echo "git remote add target https://bling_yshs:${token}@gitee.com/bling_yshs/hyzl-tauri-release"
+          git commit -m "github action auto release"
+          git remote add target https://bling_yshs:${{ secrets.GITEE_ACCESS_TOKEN }}@gitee.com/bling_yshs/hyzl-tauri-release
+          git push -f --all target
