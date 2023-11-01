@@ -18,6 +18,8 @@ jobs:
           node-version: 18
 
       - name: Edit update.json
+        env:
+          TOKEN: ${{ secrets.GITEE_ACCESS_TOKEN }}
         run: |
           mkdir ./app
           cd ./app
@@ -25,11 +27,6 @@ jobs:
           wget https://gist.githubusercontent.com/bling-yshs/2bbb0b6ca59cd75553fe3f2c33ea3992/raw/134c9a93252b61c5752e4885ec352d97705071bf/editUpdateJson.cjs
           node ./editUpdateJson.cjs
           cat ./latest.json
-
-      - name: Upload
-        env:
-          TOKEN: ${{ secrets.GITEE_ACCESS_TOKEN }}
-        run: |
           git config --global user.name "bling_yshs"
           git config --global user.email "377178599@qq.com"
           git init
