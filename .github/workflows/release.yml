@@ -69,6 +69,7 @@ jobs:
           ls
           cd ./src-tauri/target/release/bundle/msi
           echo "-------------------------------------All product--------------------------------------------"
+          ls
           git config --global user.name "bling_yshs"
           git config --global user.email "377178599@qq.com"
           git init
