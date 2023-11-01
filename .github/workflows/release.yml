@@ -90,11 +90,12 @@ jobs:
 
       - name: Edit update.json
         run: |
-          mkdir app
+          mkdir ./app
           cd ./app
           wget https://github.com/bling-yshs/HYZL-Tauri/releases/latest/download/latest.json
           wget https://gist.githubusercontent.com/bling-yshs/2bbb0b6ca59cd75553fe3f2c33ea3992/raw/134c9a93252b61c5752e4885ec352d97705071bf/editUpdateJson.cjs
           node ./editUpdateJson.cjs
+          cat ./latest.json
 
       - name: Upload
         run: |
