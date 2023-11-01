@@ -58,7 +58,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: "HYZL-Tauri v__VERSION__"
-          releaseBody: "See the assets to download and install this version."
+          releaseBody: "Test new release body"
           releaseDraft: false
           prerelease: false
 
