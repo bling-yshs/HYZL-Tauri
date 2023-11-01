@@ -76,3 +76,19 @@ jobs:
           git commit -m "github action auto release"
           git remote add target https://bling_yshs:${{ secrets.GITEE_ACCESS_TOKEN }}@gitee.com/bling_yshs/hyzl-tauri-release
           git push -f --all target
+
+  release-gitee:
+    needs:
+      - release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Edit update.json
+        run: |
+          wget https://github.com/bling-yshs/HYZL-Tauri/releases/latest/download/latest.json
+          wget https://gist.githubusercontent.com/bling-yshs/2bbb0b6ca59cd75553fe3f2c33ea3992/raw/
+          node ./editUpdateJson.cjs
