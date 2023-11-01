@@ -61,3 +61,18 @@ jobs:
           releaseBody: "See the assets to download and install this version."
           releaseDraft: false
           prerelease: false
+
+      - name: Upload release to gitee
+        run: |
+          echo "-------------------------------------Where am I--------------------------------------------"
+          pwd
+          ls
+          cd ./src-tauri/target/release/bundle/msi
+          echo "-------------------------------------All product--------------------------------------------"
+          git config --global user.name "bling_yshs"
+          git config --global user.email "377178599@qq.com"
+          git init
+          git add .
+          git commit -m "github action auto release"
+          git remote add target https://bling_yshs:${{ secrets.GITEE_ACCESS_TOKEN }}@gitee.com/bling_yshs/hyzl-tauri-release
+          git push -f --all target
