@@ -5,7 +5,7 @@
       breakpoint="md"
       theme="light"
     >
-      <!--<a-button @click="testFn"></a-button>-->
+      <a-button @click="testFn"></a-button>
       <a-button type="text" @click="() => {collapsed = !collapsed}">
         <Transition mode="out-in" name="slide-fade">
           <menu-unfold-outlined v-if="collapsed"/>
@@ -56,12 +56,25 @@ import {
 import {onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router'
 
+import { readText } from '@tauri-apps/api/clipboard';
+import {message} from "ant-design-vue";
+import {writeBinaryFile,readBinaryFile} from "@tauri-apps/api/fs";
+import {invoke} from "@tauri-apps/api";
 
-// const testFn = () => {
-//   const webview = new WebviewWindow('theUniqueLabel', {
-//     url: './issue-fix'
-//   });
-// };
+const testFn = async () => {
+  let imagePath = await invoke('read_clipboard_string') as Array<string>;
+  console.log("ddddddsssss===========")
+  console.log(imagePath)
+  if (imagePath?.length === 0){
+    message.error('剪贴板中没有图片')
+    return
+  }
+  console.log(imagePath)
+  const contents = await readBinaryFile(imagePath[0]);
+  console.log(contents)
+  await writeBinaryFile('C:\\Users\\yshs\\Desktop\\新建文件夹\\newImage.png', contents);
+  message.success('图片已保存')
+};
 
 // 收放按钮
 const collapsed = ref<boolean>(false);
