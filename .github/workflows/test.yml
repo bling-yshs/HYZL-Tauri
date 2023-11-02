@@ -16,11 +16,12 @@ jobs:
 
       - name: Generate changelog
         id: changelog
-        uses: bling-yshs/hyzl-changelog-generator@v0.0.6
+        uses: jaywcjlove/changelog-generator@v1.9.5
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          original-markdown: false
 
-      - name: Get the changelog
+      - name: Print the modified changelog
         run: |
           echo "--------------------------这是更新日志--------------------------"
           cat << "EOF"
