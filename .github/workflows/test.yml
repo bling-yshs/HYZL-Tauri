@@ -20,9 +20,21 @@ jobs:
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get the changelog
+      - name: Modify the changelog
+        id: modified
         run: |
-          echo "--------------------------这是更新日志--------------------------"
-          cat << "EOF"
+          set -o noglob
+          log=$(cat << "EOF" | grep -v Bumping | tac
           ${{ steps.changelog.outputs.changelog }}
+          EOF
+          )
+          log="${log//'%'/'%25'}"
+          log="${log//$'\n'/'%0A'}"
+          log="${log//$'\r'/'%0D'}"
+          echo "log=$log" >> $GITHUB_OUTPUT
+
+      - name: Print the modified changelog
+        run: |
+          cat << "EOF"
+          ${{ steps.modified.outputs.log }}
           EOF
