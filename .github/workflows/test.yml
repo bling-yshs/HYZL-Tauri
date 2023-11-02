@@ -19,6 +19,9 @@ jobs:
         uses: heinrichreimer/action-github-changelog-generator@v2.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          compareLink: false
+          onlyLastTag: true
+          stripHeaders: true
 
       - name: Get the changelog
         run: |
