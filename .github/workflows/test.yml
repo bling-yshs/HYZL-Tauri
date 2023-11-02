@@ -2,10 +2,6 @@ name: test
 run-name: "自定义测试: (${{ github.event.head_commit.message }})"
 on:
   push:
-    branches:
-      - main
-    tags-ignore:
-      - 'v*'
   workflow_dispatch:
 
 jobs:
