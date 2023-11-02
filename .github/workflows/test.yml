@@ -10,10 +10,9 @@ jobs:
   release-gitee:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Generate changelog
         id: changelog
@@ -23,7 +22,7 @@ jobs:
 
       - name: Get the changelog
         run: |
-          cat << "EOF"
           echo "--------------------------这是更新日志--------------------------"
+          cat << "EOF"
           ${{ steps.changelog.outputs.changelog }}
           EOF
