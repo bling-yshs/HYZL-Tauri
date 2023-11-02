@@ -55,6 +55,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           original-markdown: false
+          custom-emoji: 'test🧪'
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
