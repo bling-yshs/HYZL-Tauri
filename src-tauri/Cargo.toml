@@ -21,6 +21,7 @@ tauri = { version = "1.5.2", features = [ "api-all", "updater", "devtools"] }
 serde = "1.0.190"
 window-vibrancy = "0.4.2"
 
+
 [profile.release]
 #strip = true
 #lto = true

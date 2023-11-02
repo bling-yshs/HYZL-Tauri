@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a-modal :title="'发现新版本 v'+props.version" @ok="handleOk" :open="isOpen" ok-text="立即更新" cancel-text="下次再说" @cancel="handleCancel" :maskClosable="false">
-      <p>发现新版本：{{props.version}}</p>
+    <a-modal :title="'发现新版本 v'+props.manifest.version" @ok="handleOk" :open="isOpen" ok-text="立即更新" cancel-text="下次再说" @cancel="handleCancel" :maskClosable="false">
+      <p>发现新版本：{{ props.manifest.body }}</p>
     </a-modal>
   </div>
 </template>
@@ -13,7 +13,7 @@ import {message} from "ant-design-vue";
 
 let isOpen = ref(true);
 // 接收父组件传递过来的值
-let props = defineProps(['version']);
+let props = defineProps(['manifest']);
 const handleOk = async () => {
   message.info({
     content: '正在下载更新包...',

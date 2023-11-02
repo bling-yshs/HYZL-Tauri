@@ -2,7 +2,7 @@
   <Suspense> <!--全局异步挂载-->
     <a-app> <!--全局挂载 message-->
       <div :class="{'not-win11':notWin11}">
-        <UpdateModal v-if="isNeedUpdate" :version="newVersion"/>
+        <UpdateModal v-if="isNeedUpdate" :manifest="latestManifest"/>
         <IndexPage/>
       </div>
     </a-app>
@@ -30,7 +30,7 @@ onMounted(async () => {
 // 检查更新
 
 let isNeedUpdate = ref(false);
-let newVersion = ref('');
+let latestManifest = ref<iManifest>();
 
 interface iManifest {
   version: string,
@@ -41,10 +41,9 @@ interface iManifest {
 async function checkUpdateFn() {
   try {
     const {shouldUpdate, manifest} = await checkUpdate()
-    console.log(manifest)
     if (shouldUpdate) {
       console.log('触发更新')
-      newVersion.value = (manifest as iManifest).version;
+      latestManifest.value = manifest;
       isNeedUpdate.value = true;
     }
   } catch (error) {
