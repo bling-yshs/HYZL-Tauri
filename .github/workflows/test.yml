@@ -2,7 +2,9 @@ name: test
 run-name: "自定义测试: (${{ github.event.head_commit.message }})"
 on:
   push:
-    tags:
+    branches:
+      - main
+    tags-ignore:
       - 'v*'
   workflow_dispatch:
 
@@ -10,22 +12,20 @@ jobs:
   release-gitee:
     runs-on: ubuntu-latest
     steps:
-
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: "✏️ Generate release changelog"
-        id: changelog
-        uses: heinrichreimer/action-github-changelog-generator@v2.3
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          compareLink: false
-          onlyLastTag: true
-          stripHeaders: true
+          node-version: 18
+
+      - name: Generate changelog
+        id: changelog
+        uses: bling-yshs/hyzl-changelog-generator@v0.0.4
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get the changelog
         run: |
-          echo "--------------------------这是更新日志--------------------------"
           cat << "EOF"
+          echo "--------------------------这是更新日志--------------------------"
           ${{ steps.changelog.outputs.changelog }}
           EOF
