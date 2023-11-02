@@ -44,22 +44,17 @@
 </template>
 <script lang="ts" setup>
 import {
-  CloudDownloadOutlined,
-  InfoCircleOutlined,
-  DesktopOutlined,
   BugOutlined,
-  MenuUnfoldOutlined,
+  CloudDownloadOutlined,
+  DesktopOutlined,
+  InfoCircleOutlined,
   MenuFoldOutlined,
+  MenuUnfoldOutlined,
   RocketOutlined,
   SettingOutlined,
 } from '@ant-design/icons-vue';
 import {onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router'
-
-import { readText } from '@tauri-apps/api/clipboard';
-import {message} from "ant-design-vue";
-import {writeBinaryFile,readBinaryFile} from "@tauri-apps/api/fs";
-import {invoke} from "@tauri-apps/api";
 
 // const testFn = async () => {
 //   let imagePath = "ccccc"
