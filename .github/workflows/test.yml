@@ -16,25 +16,13 @@ jobs:
 
       - name: Generate changelog
         id: changelog
-        uses: metcalfc/changelog-generator@v4.1.0
+        uses: bling-yshs/hyzl-changelog-generator@v0.0.1
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Modify the changelog
-        id: modified
+      - name: Get the changelog
         run: |
-          set -o noglob
-          log=$(cat << "EOF" | grep -v Bumping | tac
-          ${{ steps.changelog.outputs.changelog }}
-          EOF
-          )
-          log="${log//'%'/'%25'}"
-          log="${log//$'\n'/'%0A'}"
-          log="${log//$'\r'/'%0D'}"
-          echo "log=$log" >> $GITHUB_OUTPUT
-
-      - name: Print the modified changelog
-        run: |
+          echo "--------------------------这是更新日志--------------------------"
           cat << "EOF"
-          ${{ steps.modified.outputs.log }}
+          ${{ steps.changelog.outputs.changelog }}
           EOF
