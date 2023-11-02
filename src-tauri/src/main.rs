@@ -3,7 +3,6 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
-use std::path::PathBuf;
 use tauri::Manager;
 use window_vibrancy::apply_mica;
 
@@ -35,22 +34,7 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             // page::start::start::start_yunzai_and_api,
-            read_clipboard_string
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application")
-}
-
-use clipboard_files;
-
-#[tauri::command]
-fn read_clipboard_string() -> Vec<PathBuf> {
-    let files = clipboard_files::read();
-    match files {
-        Ok(v) => { v }
-        Err(_) => {
-            println!("error");
-            vec![]
-        }
-    }
 }
