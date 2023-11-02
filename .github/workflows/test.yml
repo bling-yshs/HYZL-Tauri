@@ -15,7 +15,7 @@ jobs:
 
       - name: Generate changelog
         id: changelog
-        uses: bling-yshs/hyzl-changelog-generator@v0.0.4
+        uses: metcalfc/changelog-generator@v4.1.0
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
 
