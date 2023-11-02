@@ -14,31 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Generate changelog
+      - name: "✏️ Generate release changelog"
         id: changelog
-        uses: bling-yshs/hyzl-changelog-generator@v0.0.1
+        uses: heinrichreimer/action-github-changelog-generator@v2.3
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: test
-        run: |
-          echo "--------------------------内容--------------------------"
-          echo "--/home/runner/work/_actions/bling-yshs/hyzl-changelog-generator/v0.0.1/dist/--"
-          ls /home/runner/work/_actions/bling-yshs/hyzl-changelog-generator/v0.0.1/dist/
-            echo "--/home/runner/work/_actions/bling-yshs/hyzl-changelog-generator/v0.0.1/--"
-            ls /home/runner/work/_actions/bling-yshs/hyzl-changelog-generator/v0.0.1/
-          echo "--/home/runner/work/_actions/bling-yshs/hyzl-changelog-generator/--"
-            ls /home/runner/work/_actions/bling-yshs/hyzl-changelog-generator/
-            echo "--/home/runner/work/_actions/bling-yshs/--"
-            ls /home/runner/work/_actions/bling-yshs/
-            echo "--/home/runner/work/_actions/--"
-            ls /home/runner/work/_actions/
-            echo "--/home/runner/work/--"
-            ls /home/runner/work/
-            echo "--/home/runner/--"
-            ls /home/runner/
-            echo "--/home/--"
-            ls /home/
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get the changelog
         run: |
