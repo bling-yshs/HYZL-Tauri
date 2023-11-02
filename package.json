@@ -8,7 +8,8 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "tauri-dev": "tauri dev",
-    "tauri-build": "tauri build"
+    "tauri-build": "tauri build",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",

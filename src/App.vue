@@ -41,6 +41,7 @@ interface iManifest {
 async function checkUpdateFn() {
   try {
     const {shouldUpdate, manifest} = await checkUpdate()
+    console.log(manifest)
     if (shouldUpdate) {
       console.log('触发更新')
       latestManifest.value = manifest;
