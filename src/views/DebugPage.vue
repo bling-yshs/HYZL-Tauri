@@ -57,7 +57,6 @@
             </a-space>
             <a-space>
               <a-button type="default" @click="openYunzaiFolder">云崽文件夹</a-button>
-              <a-button type="default" @click="openUFQFolder">签名 API 文件夹</a-button>
             </a-space>
           </a-space>
         </a-col>
@@ -66,11 +65,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import {FolderOpenOutlined, SendOutlined, CodeOutlined} from '@ant-design/icons-vue';
+import {CodeOutlined, FolderOpenOutlined, SendOutlined} from '@ant-design/icons-vue';
 import NormalContent from "@/component/NormalContent.vue"
 import {message} from "ant-design-vue";
 import {Child, Command, open} from '@tauri-apps/api/shell';
-import {getYunzaiDir, getSignApiDir} from "@/entity/hyzlPath.ts";
+import {getYunzaiDir} from "@/entity/hyzlPath.ts";
 import {ref, watch} from "vue";
 import {exists} from "@tauri-apps/api/fs";
 import {writeText} from '@tauri-apps/api/clipboard';
@@ -140,15 +139,6 @@ watch(tempCommandProcess, async (newProcess) => {
 async function copyTerminalLog() {
   await writeText(terminalText.value)
   message.success({content: '复制成功', duration: 2})
-}
-
-//打开文件夹
-async function openUFQFolder() {
-  if (!await exists(await getSignApiDir())) {
-    message.error({content: '签名 API 文件夹不存在', duration: 2})
-    return
-  }
-  await open(await getSignApiDir())
 }
 
 async function openYunzaiFolder() {
