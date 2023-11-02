@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "tauri-dev": "tauri dev",
     "tauri-build": "tauri build",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
@@ -23,6 +24,7 @@
     "@tauri-apps/cli": "^1.5.2",
     "@types/node": "^20.8.8",
     "@vitejs/plugin-vue": "^4.4.0",
+    "husky": "^8.0.3",
     "typescript": "^5.2.2",
     "vite": "^4.4.11",
     "vue-tsc": "^1.8.19"
