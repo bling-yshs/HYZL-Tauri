@@ -2,6 +2,7 @@
   <Suspense> <!--全局异步挂载-->
     <a-app> <!--全局挂载 message-->
       <div :class="{'not-win11':notWin11}">
+        <UpdateModal v-if="isNeedUpdate" :version="newVersion"/>
         <IndexPage/>
       </div>
     </a-app>
@@ -12,20 +13,52 @@
 import IndexPage from "./views/IndexPage.vue";
 import {onMounted, ref} from "vue";
 import {fetch} from '@tauri-apps/api/http';
-import {writeTextFile, exists, readTextFile} from '@tauri-apps/api/fs';
+import {exists, readTextFile, writeTextFile} from '@tauri-apps/api/fs';
 import {getAnnouncementPath} from "@/entity/hyzlPath.ts";
-import {Modal} from 'ant-design-vue';
-import { appWindow } from '@tauri-apps/api/window';
+import {message, Modal} from 'ant-design-vue';
+import {checkUpdate,} from '@tauri-apps/api/updater'
+import {version} from '@tauri-apps/api/os';
+import UpdateModal from "@/component/UpdateModal.vue";
 
 // 公告
 onMounted(async () => {
   await getAnnouncement()
-  await appWindow.setDecorations(true);
+  await checkUpdateFn()
 });
+
+
+// 检查更新
+
+let isNeedUpdate = ref(false);
+let newVersion = ref('');
+
+interface iManifest {
+  version: string,
+  date: string,
+  body: string
+}
+
+async function checkUpdateFn() {
+  try {
+    const {shouldUpdate, manifest} = await checkUpdate()
+    console.log(manifest)
+    if (shouldUpdate) {
+      console.log('触发更新')
+      newVersion.value = (manifest as iManifest).version;
+      isNeedUpdate.value = true;
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+
+// 公告
 interface announcement {
   version: number,
   content: string
 }
+
 async function getAnnouncement() {
   const response = (await fetch('https://gist.githubusercontent.com/bling-yshs/70898cb0d69bef4c16cf7823a1a767b5/raw/', {
     method: 'GET',
@@ -56,10 +89,10 @@ async function getAnnouncement() {
 
 // mica背景
 let notWin11 = ref(true);
-import {version} from '@tauri-apps/api/os';
 onMounted(async () => {
   changeWhenNotWin11()
 });
+
 async function changeWhenNotWin11() {
   const osVersion = await version();
   Number(osVersion.split('.')[2]) > 22000 ? notWin11.value = false : notWin11.value = true

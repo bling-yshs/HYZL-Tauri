@@ -2,9 +2,7 @@ name: test
 run-name: "自定义测试: (${{ github.event.head_commit.message }})"
 on:
   push:
-    branches:
-      - main
-    tags-ignore:
+    tags:
       - 'v*'
   workflow_dispatch:
 
@@ -16,3 +14,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v4.1.0
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get the changelog
+        run: |
+          cat << "EOF"
+          echo "--------------------------这是更新日志--------------------------"
+          ${{ steps.changelog.outputs.changelog }}
+          EOF

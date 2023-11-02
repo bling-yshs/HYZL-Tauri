@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "HYZL-Tauri",
-    "version": "0.3.9"
+    "version": "0.3.11"
   },
   "tauri": {
     "allowlist": {
@@ -95,7 +95,7 @@
       "endpoints": [
         "https://gitee.com/bling_yshs/hyzl-tauri-update/raw/master/latest.json"
       ],
-      "dialog": true,
+      "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEVBRUYzM0I5RjAxRjhCQjEKUldTeGl4L3d1VFB2NnFqSXdOTFB4WUR1WHhJeHZXbXFHYmR0bTh0MGhMbDVDNGFselZtSHNWWFkK"
     },
     "windows": [
