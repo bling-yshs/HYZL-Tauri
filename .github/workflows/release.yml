@@ -49,8 +49,8 @@ jobs:
       - name: Get current tauri version
         id: current-version
         run: |
-          version=$(node ./.github/script/get-tauri-version.cjs)
-          version="v$version"
+          $version=$(node ./.github/script/get-tauri-version.cjs)
+          $version="v$version"
           echo $version
           echo "version=$version" >> $GITHUB_OUTPUT
 
