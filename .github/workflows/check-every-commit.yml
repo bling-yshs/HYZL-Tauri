@@ -47,8 +47,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: echo
-        run: |
-            echo "current-version: ${{ needs.check.outputs.current-version }}"
-            echo "latest-tag: ${{ needs.check.outputs.latest-tag }}"
-            echo "trigger: ${{ needs.check.outputs.current-version.version != needs.check.outputs.latest-tag.tag }}"
+      - name: Trigger release
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            await github.actions.createWorkflowDispatch({
+            ref: 'main',
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: 'release.yml',
+            });
