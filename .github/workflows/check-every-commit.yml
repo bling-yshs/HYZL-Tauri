@@ -38,6 +38,7 @@ jobs:
             echo "current-version: ${{ steps.current-version.outputs.version }}"
             echo "latest-tag: ${{ steps.latest-tag.outputs.tag }}"
             echo "trigger: ${{ steps.current-version.outputs.version != steps.latest-tag.outputs.tag }}"
+
   trigger-release:
     runs-on: ubuntu-latest
     needs: check
@@ -52,13 +53,15 @@ jobs:
         with:
           result-encoding: string
           script: |
-            await github.rest.actions.createWorkflowDispatch({
+            await github.rest.actions.createWorkflowDispatch
+            ({
+            
             ref: 'main',
             owner: context.repo.owner,
             repo: context.repo.repo,
             workflow_id: 'release.yml',
             inputs: {
-              tag: ${{ needs.check.outputs.tag }}
+              tag: '${{ needs.check.outputs.tag }}'
             }
             
             });
