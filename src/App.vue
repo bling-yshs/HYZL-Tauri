@@ -1,11 +1,14 @@
 <template>
   <Suspense> <!--全局异步挂载-->
-    <a-app> <!--全局挂载 message-->
-      <div :class="{'not-win11':notWin11}">
-        <UpdateModal v-if="isNeedUpdate" :manifest="latestManifest"/>
-        <IndexPage/>
-      </div>
-    </a-app>
+    
+    <a-config-provider :locale="zhCN">
+      <a-app> <!--全局挂载 message-->
+        <div :class="{'not-win11':notWin11}">
+          <UpdateModal v-if="isNeedUpdate" :manifest="latestManifest"/>
+          <IndexPage/>
+        </div>
+      </a-app>
+    </a-config-provider>
   </Suspense>
 </template>
 
@@ -19,6 +22,8 @@ import {Modal} from 'ant-design-vue';
 import {checkUpdate,} from '@tauri-apps/api/updater'
 import {version} from '@tauri-apps/api/os';
 import UpdateModal from "@/component/UpdateModal.vue";
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
+
 
 // 公告
 onMounted(async () => {
@@ -41,7 +46,6 @@ interface iManifest {
 async function checkUpdateFn() {
   try {
     const {shouldUpdate, manifest} = await checkUpdate()
-    console.log(manifest)
     if (shouldUpdate) {
       console.log('触发更新')
       latestManifest.value = manifest;

@@ -57,13 +57,9 @@ import {onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router'
 
 // const testFn = async () => {
-//   let imagePath = "ccccc"
-//   console.log(imagePath)
-//   const contents = await readBinaryFile(imagePath);
-//   return
-//   console.log(contents)
-//   await writeBinaryFile('C:\\Users\\yshs\\Desktop\\新建文件夹\\newImage.png', contents);
-//   message.success('图片已保存')
+//   let yzSignPackagePath = 'C:/Users/yshs/AppData/Local/com.hyzl.desktop/yz-sign-package'
+//   // 复制yz-sign-package中的LiteLoader文件夹到 'QQNT主目录/resources/app' 下
+//   await copyFile(await join(yzSignPackagePath, 'LiteLoader'), 'C:/Users/yshs/AppData/Local/com.hyzl.desktop')
 // };
 
 // 收放按钮

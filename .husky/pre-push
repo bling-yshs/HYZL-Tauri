@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
+echo "正在进行推送前检查..."
+
 . "$(dirname -- "$0")/_/husky.sh"
 
 npx vue-tsc

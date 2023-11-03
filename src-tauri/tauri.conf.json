@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "HYZL-Tauri",
-    "version": "0.3.30"
+    "version": "0.3.36"
   },
   "tauri": {
     "allowlist": {
@@ -40,6 +40,11 @@
             "name": "git",
             "args": true,
             "cmd": "git"
+          },
+          {
+            "name": "certutil",
+            "args": true,
+            "cmd": "certutil"
           },
           {
             "name": "node",

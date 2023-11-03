@@ -1,17 +1,18 @@
 <template>
   <div>
+    <QQNTInstall @cancelQQNTInstall="cancelQQNTInstall" v-if="isOpenInstallQQNTLink"/>
     <normal-content>
       <h4>云崽</h4>
       <a-space direction="horizontal">
         <a-button type="default" @click="downloadMiaoYunzai">喵喵云崽</a-button>
       </a-space>
     </normal-content>
-    <!--<normal-content>-->
-    <!--  <h4>签名API</h4>-->
-    <!--  <a-space direction="horizontal">-->
-    <!--    <a-button type="default" @click="downloadUFQ">unidbg-fetch-qsign</a-button>-->
-    <!--  </a-space>-->
-    <!--</normal-content>-->
+    <normal-content>
+      <h4>云崽相关</h4>
+      <a-space direction="horizontal">
+        <a-button type="default" @click="installQQNTLink">辅助安装QQNT消息链接模块</a-button>
+      </a-space>
+    </normal-content>
   </div>
 </template>
 <script setup lang="ts">
@@ -20,6 +21,8 @@ import NormalContent from "@/component/NormalContent.vue"
 import {message} from 'ant-design-vue';
 import {Command} from "@tauri-apps/api/shell";
 import {getAppDir} from "@/entity/hyzlPath.ts";
+import QQNTInstall from "@/component/QQNTInstall.vue";
+import {ref} from "vue";
 
 async function downloadMiaoYunzai() {
   let downloadKey = '下载喵喵云崽'
@@ -34,6 +37,15 @@ async function downloadMiaoYunzai() {
     }
   })
   command.spawn();
+}
+//下载QQNT消息链接模块
+let isOpenInstallQQNTLink = ref(false)
+async function cancelQQNTInstall(){
+  isOpenInstallQQNTLink.value = false
+}
+
+async function installQQNTLink(){
+  isOpenInstallQQNTLink.value = true
 }
 </script>
 
