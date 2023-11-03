@@ -2,6 +2,10 @@ name: Release
 run-name: "✨ 发布正式版: (${{ github.event.head_commit.message }})"
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag"
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -46,18 +50,10 @@ jobs:
           original-markdown: false
           custom-emoji: 'test🧪'
 
-      - name: Get current tauri version
-        id: current-version
-        run: |
-          $version=$(node ./.github/script/get-tauri-version.cjs)
-          $version="v$version"
-          echo $version
-          echo "version=$version" >> $GITHUB_OUTPUT
-
       - name: Create tag
         uses: actions/github-script@v6
         env:
-          TAG_NAME: ${{ steps.current-version.outputs.version }}
+          TAG_NAME: ${{ github.event.inputs.tag }}
         with:
           script: |
             const commitNewTag = await github.rest.git.createTag({
