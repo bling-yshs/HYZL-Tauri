@@ -19,32 +19,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup rust
+      - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Setup pnpm
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Pnpm setup
         uses: pnpm/action-setup@v2
         with:
           version: latest
 
-      - name: Setup node
+      - name: Node setup and cache
         uses: actions/setup-node@v3
         with:
-          node-version: "18.18.2"
-
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./node_modules
-          key: tauri-node_modules
-
-      - name: Cache cargo
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./src-tauri/target
-          key: tauri-cargo
+          node-version: "20.x"
+          cache: "pnpm"
 
       - name: Install frontend dependencies
         run: pnpm install
@@ -94,7 +86,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: "20.x"
 
       - name: Edit update.json
         env:
