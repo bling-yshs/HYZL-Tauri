@@ -61,7 +61,7 @@ jobs:
             repo: context.repo.repo,
             workflow_id: 'release.yml',
             inputs: {
-              tag: '${{ needs.check.outputs.version }}'
+              tag: '${{ needs.check.outputs.version }}',
               workflowMessage: '${{ github.event.head_commit.message }}'
             }
             
