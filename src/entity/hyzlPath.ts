@@ -1,4 +1,4 @@
-import {appDataDir, join} from "@tauri-apps/api/path";
+import {appCacheDir, appDataDir, join} from "@tauri-apps/api/path";
 
 let cachedHyzlDir: string | null = null;
 export const getAppDir = async (): Promise<string> => cachedHyzlDir ? cachedHyzlDir : cachedHyzlDir = await appDataDir();
@@ -12,3 +12,9 @@ export const getAnnouncementDir = async (): Promise<string> => cachedAnnouncemen
 // 公告路径
 let cachedAnnouncementPath: string | null = null;
 export const getAnnouncementPath = async (): Promise<string> => cachedAnnouncementPath ? cachedAnnouncementPath : cachedAnnouncementPath = await join(await getAnnouncementDir(), "announcement.json");
+
+// 缓存文件路径 await appCacheDir();
+
+let cachedCacheDir: string | null = null;
+export const getAppCacheDir = async (): Promise<string> => cachedCacheDir ? cachedCacheDir : cachedCacheDir = await appCacheDir()
+

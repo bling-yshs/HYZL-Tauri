@@ -15,7 +15,9 @@
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
     "@tauri-apps/api": "^1.5.0",
+    "@types/js-yaml": "^4.0.9",
     "ant-design-vue": "^4.0.5",
+    "js-yaml": "^4.1.0",
     "tauri-plugin-upload-api": "github:tauri-apps/tauri-plugin-upload#v1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"

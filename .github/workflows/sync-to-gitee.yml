@@ -1,9 +1,12 @@
 name: Sync To Gitee
-run-name: "🔁 同步到 Gitee: (${{ github.event.head_commit.message }})"
+run-name: "🔁 同步到 Gitee: (${{ github.event.inputs.workflow_message }})"
 
 on:
-  push:
   workflow_dispatch:
+    inputs:
+      workflow_message:
+        description: "workflow message"
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
