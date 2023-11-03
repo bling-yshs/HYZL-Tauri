@@ -61,7 +61,7 @@ jobs:
             repo: context.repo.repo,
             workflow_id: 'release.yml',
             inputs: {
-              tag: '${{ needs.check.outputs.tag }}'
+              tag: '${{ needs.check.outputs.version }}'
             }
             
             });
