@@ -54,6 +54,28 @@ jobs:
           echo $version
           echo "version=$version" >> $GITHUB_OUTPUT
 
+      - name: Create tag
+        uses: actions/github-script@v6
+        env:
+          TAG_NAME: ${{ steps.current-version.outputs.version }}
+        with:
+          script: |
+            const commitNewTag = await github.rest.git.createTag({
+              owner: context.repo.owner,
+              repo: context.payload.repository.name,
+              tag: '${{ env.TAG_NAME }}',
+              message: context.payload.commits[0].message,
+              object: context.payload.commits[0].id,
+              type: 'commit',
+            })
+
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.payload.repository.name,
+              ref: `refs/tags/${{ env.TAG_NAME }}`,
+              sha: commitNewTag.data.sha,
+            })
+
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
         env:
