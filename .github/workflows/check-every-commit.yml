@@ -107,7 +107,7 @@ jobs:
             ref: 'main',
             owner: context.repo.owner,
             repo: context.repo.repo,
-            workflow_id: 'release.yml',
+            workflow_id: 'sync-to-gitee.yml',
             inputs: {
               workflow_message: '${{ github.event.head_commit.message }}'
             }
