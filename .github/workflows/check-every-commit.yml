@@ -20,7 +20,8 @@ jobs:
         id: current-version
         run: |
           version=$(node ./.github/script/get-tauri-version.cjs)
-          echo "::set-output name=version::$version"
+          echo $version
+          echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Get Latest Release Tag
         id: latest-tag
@@ -30,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
     # 当check里的current-version的version不等于latest-tag的tag时，才会触发trigger
-    if: ${{ needs.check.outputs.current-version != needs.check.outputs.latest-tag }}
+    if: needs.check.outputs.current-version.version != needs.check.outputs.latest-tag.tag
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,4 +40,4 @@ jobs:
         run: |
             echo "current-version: ${{ needs.check.outputs.current-version }}"
             echo "latest-tag: ${{ needs.check.outputs.latest-tag }}"
-            echo "trigger: ${{ needs.check.outputs.current-version != needs.check.outputs.latest-tag }}"
+            echo "trigger: ${{ needs.check.outputs.current-version.version != needs.check.outputs.latest-tag.tag }}"
