@@ -50,27 +50,12 @@ jobs:
           original-markdown: false
           custom-emoji: 'test🧪'
 
-      - name: Create tag
-        uses: actions/github-script@v6
-        env:
-          TAG_NAME: ${{ github.event.inputs.tag }}
+      - name: Create Tag
+        uses: negz/create-tag@v1
         with:
-          script: |
-            const commitNewTag = await github.rest.git.createTag({
-              owner: context.repo.owner,
-              repo: context.payload.repository.name,
-              tag: '${{ env.TAG_NAME }}',
-              message: context.payload.commits[0].message,
-              object: context.payload.commits[0].id,
-              type: 'commit',
-            })
-
-            await github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.payload.repository.name,
-              ref: `refs/tags/${{ env.TAG_NAME }}`,
-              sha: commitNewTag.data.sha,
-            })
+          version: ${{ github.event.inputs.tag }}
+          message: ''
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
