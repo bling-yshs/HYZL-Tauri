@@ -1,10 +1,13 @@
 name: Release
-run-name: "✨ 发布正式版: (${{ github.event.inputs.tag }})"
+run-name: "✨ 发布正式版: (${{ github.event.inputs.workflowMessage }})"
 on:
   workflow_dispatch:
     inputs:
       tag:
         description: "tag"
+        type: string
+      workflowMessage:
+        description: "workflow message"
         type: string
 
 concurrency:

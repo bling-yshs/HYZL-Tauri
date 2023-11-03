@@ -62,6 +62,7 @@ jobs:
             workflow_id: 'release.yml',
             inputs: {
               tag: '${{ needs.check.outputs.version }}'
+              workflowMessage: '${{ github.event.head_commit.message }}'
             }
             
             });
