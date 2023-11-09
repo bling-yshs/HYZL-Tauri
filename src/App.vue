@@ -19,7 +19,7 @@ import {fetch} from '@tauri-apps/api/http';
 import {exists, readTextFile, writeTextFile} from '@tauri-apps/api/fs';
 import {getAnnouncementPath} from "@/entity/hyzlPath.ts";
 import {Modal} from 'ant-design-vue';
-import {checkUpdate,} from '@tauri-apps/api/updater'
+import {checkUpdate} from '@tauri-apps/api/updater'
 import {version} from '@tauri-apps/api/os';
 import UpdateModal from "@/component/UpdateModal.vue";
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
