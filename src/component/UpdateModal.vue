@@ -2,30 +2,38 @@
   <div>
     <a-modal :title="'发现新版本: v'+props.manifest.version" @ok="handleOk" :open="isOpen" ok-text="立即更新"
              cancel-text="下次再说" @cancel="handleCancel" :maskClosable="false">
-      <h3>📋 更新内容:</h3>
-      <pre>{{ changelog }}</pre>
+      <pre style="white-space: pre-wrap">{{ changelog }}<span
+          v-if="showMore"
+          @click="()=>{changelog=props.manifest.body;showMore=false}"
+          style="color: #247fff">展开更多
+        </span></pre>
     </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import {installUpdate,} from '@tauri-apps/api/updater'
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {relaunch} from '@tauri-apps/api/process'
 import {message} from "ant-design-vue";
 
+let showMore = ref(false)
 let isOpen = ref(true);
 // 接收父组件传递过来的值
 let props = defineProps(['manifest']);
 
-const changelog = computed(() => {
-let arr = props.manifest.body.split('\n') as Array<string>
+onMounted(async () => {
+  let arr = props.manifest.body.split('\n') as Array<string>
   if (arr.length > 5) {
     arr.splice(5)
     arr[4] += ' ...'
+    showMore.value = true
   }
   let res = arr.join('\n')
-  return res
+  changelog.value = res
 })
+
+let changelog = ref('')
+
 const handleOk = async () => {
   message.info({
     content: '正在下载更新包...',
