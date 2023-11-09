@@ -1,18 +1,19 @@
 <template>
   <div>
     <a-modal :title="'发现新版本: v'+props.manifest.version" @ok="handleOk" :open="isOpen" ok-text="立即更新"
+             :after-close="()=>emit('close')"
              cancel-text="下次再说" @cancel="handleCancel" :maskClosable="false">
       <pre style="white-space: pre-wrap">{{ changelog }}<span
-          v-if="showMore"
-          @click="()=>{changelog=props.manifest.body;showMore=false}"
-          style="color: #247fff">展开更多
+        v-if="showMore"
+        @click="()=>{changelog=props.manifest.body;showMore=false}"
+        style="color: #247fff">展开更多
         </span></pre>
     </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
-import {installUpdate,} from '@tauri-apps/api/updater'
-import {computed, onMounted, ref} from "vue";
+import {installUpdate} from '@tauri-apps/api/updater'
+import {onMounted, ref} from "vue";
 import {relaunch} from '@tauri-apps/api/process'
 import {message} from "ant-design-vue";
 
@@ -20,6 +21,8 @@ let showMore = ref(false)
 let isOpen = ref(true);
 // 接收父组件传递过来的值
 let props = defineProps(['manifest']);
+// 关闭后传递给父组件
+let emit = defineEmits(['close'])
 
 onMounted(async () => {
   let arr = props.manifest.body.split('\n') as Array<string>

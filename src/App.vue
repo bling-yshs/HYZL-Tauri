@@ -4,6 +4,7 @@
     <a-config-provider :locale="zhCN">
       <a-app> <!--全局挂载 message-->
         <div :class="{'not-win11':notWin11}">
+          <AnnouncementModal v-if="isOpenAnnouncement" @close="()=>isOpenAnnouncement=false"/>
           <UpdateModal v-if="isNeedUpdate" :manifest="latestManifest"/>
           <IndexPage/>
         </div>
@@ -18,14 +19,17 @@ import {onMounted, ref} from "vue";
 import {fetch} from '@tauri-apps/api/http';
 import {exists, readTextFile, writeTextFile} from '@tauri-apps/api/fs';
 import {getAnnouncementPath} from "@/entity/hyzlPath.ts";
-import {Modal} from 'ant-design-vue';
 import {checkUpdate} from '@tauri-apps/api/updater'
 import {version} from '@tauri-apps/api/os';
 import UpdateModal from "@/component/UpdateModal.vue";
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import AnnouncementModal from "@/component/AnnouncementModal.vue";
 
 
 // 公告
+
+let isOpenAnnouncement = ref(false);
+
 onMounted(async () => {
   await getAnnouncement()
   await checkUpdateFn()
@@ -73,22 +77,16 @@ async function getAnnouncement() {
   if (!await exists(await getAnnouncementPath())) {
     await writeTextFile(await getAnnouncementPath(), JSON.stringify(response));
     console.log('初始化公告文件成功')
-  } else {
-    //读取文件，比较版本号
-    const latestVersion = response.version;
-    const localData = (JSON.parse(await readTextFile(await getAnnouncementPath())) as announcement).version;
-    if (latestVersion <= localData) {
-      console.log('公告已是最新')
-      return
-    }
+    isOpenAnnouncement.value = true;
+    return
   }
-  // 展示公告
-  Modal.info({
-    title: '发现新公告',
-    content: response.content,
-    okText: '我知道了',
-  });
-  await writeTextFile(await getAnnouncementPath(), JSON.stringify(response));
+  const latestVersion = response.version;
+  const localVersion = (JSON.parse(await readTextFile(await getAnnouncementPath())) as announcement).version;
+  if (latestVersion <= localVersion) {
+    console.log('公告已是最新')
+    return
+  }
+  isOpenAnnouncement.value = true;
 }
 
 // mica背景
