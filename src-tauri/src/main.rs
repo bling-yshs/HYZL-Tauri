@@ -68,8 +68,8 @@ async fn copy_directory(source: String, destination: String) -> DataResponse<Str
         Ok(_) => {
             DataResponse::fast_success()
         }
-        Err(v) => {
-            DataResponse::failure(v.to_string())
+        Err(e) => {
+            DataResponse::failure(e.to_string())
         }
     };
 }
