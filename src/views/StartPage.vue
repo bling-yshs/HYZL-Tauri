@@ -72,13 +72,14 @@ async function startYunzai() {
     message.error("云崽文件夹不存在")
     return
   }
-  if (isStartWithQQNT){
+  if (isStartWithQQNT.value){
     if (isYunzaiOriginWindow.value) {
-      console.log("原生窗口")
+      console.log("QQNT原生窗口")
       const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'apps'], {cwd: await getYunzaiDir()});
       yunzai.spawn()
       return
     }else {
+      console.log("QQNT")
       const yunzai = new Command('node', 'apps', {cwd: await getYunzaiDir()});
       yunzai.stdout.on('data', (data) => {
         yunzaiTerminalText.value += data;
@@ -95,7 +96,7 @@ async function startYunzai() {
   }
   
   if (isYunzaiOriginWindow.value) {
-    console.log("原生窗口")
+    console.log("初始原生窗口")
     const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {cwd: await getYunzaiDir()});
     yunzai.spawn()
     return
