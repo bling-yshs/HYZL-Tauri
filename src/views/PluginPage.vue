@@ -1,6 +1,6 @@
 <template>
   <div>
-    <normal-content style="padding: 0">
+    <normal-content :without-padding="true">
       <a-alert message="该界面还在开发中，没有任何实际功能" type="warning" />
     </normal-content>
     <normal-content>
@@ -9,7 +9,7 @@
         <a-button @click="()=>{message.info(columns.length)}">test</a-button>
       </a-space>
     </normal-content>
-    <normal-content style="padding: 0">
+    <normal-content :without-padding="true">
       <a-table style="border-radius: 0.5rem"
                :columns="columns" :data-source="pluginData"
                bordered
