@@ -57,6 +57,7 @@
             </a-space>
             <a-space>
               <a-button type="default" @click="openYunzaiFolder">云崽文件夹</a-button>
+              <a-button type="default" @click="openCacheFolder">缓存文件夹</a-button>
             </a-space>
           </a-space>
         </a-col>
@@ -69,7 +70,7 @@ import {CodeOutlined, FolderOpenOutlined, SendOutlined} from '@ant-design/icons-
 import NormalContent from "@/component/NormalContent.vue"
 import {message} from "ant-design-vue";
 import {Child, Command, open} from '@tauri-apps/api/shell';
-import {getYunzaiDir} from "@/entity/hyzlPath.ts";
+import {getAppCacheDir, getYunzaiDir} from "@/entity/hyzlPath.ts";
 import {ref, watch} from "vue";
 import {exists} from "@tauri-apps/api/fs";
 import {writeText} from '@tauri-apps/api/clipboard';
@@ -148,7 +149,20 @@ async function openYunzaiFolder() {
   }
   await open(await getYunzaiDir())
 }
+
+async function openCacheFolder() {
+  await open(await getAppCacheDir())
+}
+
+
+
+
+
+
+
 </script>
+
+
 
 <style scoped>
 
