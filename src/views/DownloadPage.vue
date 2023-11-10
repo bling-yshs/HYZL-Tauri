@@ -24,6 +24,8 @@ import QQNTInstall from "@/component/QQNTInstall.vue";
 import {ref} from "vue";
 import fastCommand from "@/utils/fastCommand.ts";
 import {exists} from "@tauri-apps/api/fs";
+import {invoke} from "@tauri-apps/api";
+import {join} from "@tauri-apps/api/path";
 
 async function downloadMiaoYunzai() {
   // 检查是否已经下载喵喵云崽
@@ -55,7 +57,12 @@ async function downloadMiaoYunzai() {
   message.loading({content: '正在安装喵喵插件...', key: downloadKey, duration: 0});
   const command4 = fastCommand('git clone --depth=1 -b master https://gitee.com/yoimiya-kokomi/miao-plugin.git ./plugins/miao-plugin/', await getYunzaiDir(), true);
   await command4.execute();
-  message.success({content: '下载成功', key: downloadKey, duration: 5});
+  // 复制云崽文件夹/config/default_config 文件夹 到 云崽文件夹/config/config
+  await invoke('copy_directory', {
+    source: await join(await getYunzaiDir(), 'config/default_config'),
+    destination: await join(await getYunzaiDir(), 'config/config'),
+  })
+  message.success({content: '下载成功', key: downloadKey, duration: 3});
 }
 
 //下载QQNT消息链接模块
