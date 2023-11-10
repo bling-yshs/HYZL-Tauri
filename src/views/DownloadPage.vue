@@ -39,7 +39,7 @@ async function downloadMiaoYunzai() {
   if (res.code != 0) {
     message.loading({content: '正在下载pnpm...', key: downloadKey, duration: 0});
     await fastCommand('npm install pnpm -g --registry=https://registry.npmmirror.com').execute()
-    message.success({content: '正在设置镜像源...', key: downloadKey, duration: 0});
+    message.loading({content: '正在设置镜像源...', key: downloadKey, duration: 0});
     await fastCommand('npm config set registry https://registry.npmmirror.com').execute()
     await fastCommand('pnpm config set registry https://registry.npmmirror.com').execute()
   }

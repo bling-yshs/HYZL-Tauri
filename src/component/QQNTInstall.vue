@@ -220,14 +220,16 @@ async function downloadQQNT() {
       downloadQQNTPercent.value = Math.ceil(percent)
     },
   );
-  loadingDownloadQQNT.value = false
-  isDownloadingQQNT.value = false
   const sha = await invoke("calc_sha256", {path: await join(await getAppCacheDir(), "QQNT.exe")}) as DataResponse;
   if (!('0b91fb920b205f41aadafa16621b0072a4a8f7eecc53fb82f46c5ee902176e6d' === sha.data.toString())) {
     message.error('QQNT安装包校验失败，请尝试重新下载')
+    loadingDownloadQQNT.value = false
+    isDownloadingQQNT.value = false
     return
   }
   new Command('cmd', ['/c', 'start', await join(await getAppCacheDir(), "QQNT.exe")]).spawn()
+  loadingDownloadQQNT.value = false
+  isDownloadingQQNT.value = false
 }
 
 // 第3步，安装VC运行库
