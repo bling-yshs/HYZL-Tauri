@@ -10,6 +10,7 @@ use std::path::PathBuf;
 use sha2::{Digest, Sha256};
 use tauri::Manager;
 use window_vibrancy::apply_mica;
+
 use app::DataResponse;
 
 fn main() {
@@ -60,10 +61,12 @@ async fn calc_sha256(path: String) -> DataResponse<String> {
     return DataResponse::success(format!("{:x}", digest));
 }
 
+
 #[tauri::command]
 async fn copy_directory(source: String, destination: String) -> DataResponse<String> {
     let mut options = fs_extra::dir::CopyOptions::new();
     options.copy_inside = true;
+    options.content_only = true;
     return match fs_extra::dir::copy(source, destination, &options) {
         Ok(_) => {
             DataResponse::fast_success()
