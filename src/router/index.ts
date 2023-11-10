@@ -16,6 +16,10 @@ const router = createRouter({
       component: () => import('../views/DownloadPage.vue')
     },
     {
+      path: "/plugin",
+      component: () => import('../views/PluginPage.vue')
+    },
+    {
       path: "/issue-fix",
       component: () => import('../views/IssueFix.vue')
     },

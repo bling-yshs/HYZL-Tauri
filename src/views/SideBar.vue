@@ -22,6 +22,10 @@
           <cloud-download-outlined/>
           <span>下载</span>
         </a-menu-item>
+        <a-menu-item key="/plugin">
+          <appstore-outlined/>
+          <span>插件管理</span>
+        </a-menu-item>
         <a-menu-item key="/issue-fix">
           <bug-outlined/>
           <span>问题修复</span>
@@ -52,6 +56,7 @@ import {
   MenuUnfoldOutlined,
   RocketOutlined,
   SettingOutlined,
+  AppstoreOutlined
 } from '@ant-design/icons-vue';
 import {onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router'
@@ -87,6 +92,7 @@ watch(() => selectedKeys.value, (value) => {
 .parent-element, .parent-element * {
   background-color: transparent;
 }
+
 .slide-fade-leave-active {
   transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
   animation: rotateOut 0.1s cubic-bezier(1, 0.5, 0.8, 1);
