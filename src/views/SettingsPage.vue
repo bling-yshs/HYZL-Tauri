@@ -1,7 +1,7 @@
 <template>
   <div>
     <AnnouncementModal v-if="isOpenAnnouncement" :needUpdate="true" @close="()=>isOpenAnnouncement=false"/>
-    <UpdateModal v-if="isNeedUpdate" :manifest="latestManifest" @close="()=>isNeedUpdate=false" />
+    <UpdateModal v-if="isNeedUpdate" :manifest="latestManifest" @close="()=>isNeedUpdate=false"/>
     <normal-content>
       <a-space direction="vertical">
         <span>启动器</span>
@@ -20,6 +20,8 @@ import {ref} from "vue";
 import UpdateModal from "@/component/UpdateModal.vue";
 import {message} from "ant-design-vue";
 import AnnouncementModal from "@/component/AnnouncementModal.vue";
+
+
 // 查看公告
 let isOpenAnnouncement = ref(false);
 

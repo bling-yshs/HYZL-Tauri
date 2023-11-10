@@ -11,12 +11,38 @@
             />
           </a-col>
         </a-row>
+        <div>
+          <a-space direction="vertical">
+            <a-space>
+              <setting-outlined/>
+              <span>云崽设置</span>
+            </a-space>
+            <a-space>
+              <a-input v-model:value="robotInfo.robotQQ" placeholder="机器人QQ号">
+                <template #prefix>
+                  <qq-outlined/>
+                </template>
+              </a-input>
+              <a-input-password v-model:value="robotInfo.robotPassword" placeholder="机器人密码">
+                <template #prefix>
+                  <lock-outlined/>
+                </template>
+              </a-input-password>
+              <a-input v-model:value="robotInfo.masterQQ" placeholder="主人QQ号">
+                <template #prefix>
+                  <user-outlined/>
+                </template>
+              </a-input>
+            </a-space>
+          </a-space>
+        </div>
+        
         <a-space>
           <CodeOutlined/>
           <p>云崽日志</p>
         </a-space>
         <a-textarea
-          :rows="10"
+          :rows="8"
           readonly
           :value="yunzaiTerminalText"
           placeholder="欢迎使用 HYZL-Tauri"
@@ -52,7 +78,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import {CodeOutlined} from '@ant-design/icons-vue';
+import {CodeOutlined, LockOutlined, QqOutlined, UserOutlined,SettingOutlined} from '@ant-design/icons-vue';
 import NormalContent from "@/component/NormalContent.vue"
 import indexImage from "@/assets/index-iamge.jpg";
 import {ref, watch} from "vue";
@@ -60,7 +86,54 @@ import {Child, Command} from "@tauri-apps/api/shell";
 import {getYunzaiDir} from "@/entity/hyzlPath.ts";
 import checkProcessExist from "@/utils/checkProcessExist.ts";
 import {message} from "ant-design-vue";
-import {exists} from "@tauri-apps/api/fs";
+import {exists, readTextFile, writeTextFile} from "@tauri-apps/api/fs";
+import {join} from "@tauri-apps/api/path";
+import {dump, load} from "js-yaml";
+
+
+// 机器人信息设置
+
+interface RobotInfo {
+  robotQQ: string,
+  robotPassword: string,
+  masterQQ: string
+}
+
+
+let qqYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'));
+let qqYamlObject = load(qqYamlContext) as any;
+let otherYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/other.yaml'));
+let otherYamlObject = load(otherYamlContext) as any;
+
+
+let robotInfo = ref<RobotInfo>({
+  robotQQ: qqYamlObject.qq,
+  robotPassword: qqYamlObject.pwd,
+  masterQQ: (otherYamlObject.masterQQ ? otherYamlObject.masterQQ[0] : '')
+})
+
+watch(robotInfo.value, async (newValue) => {
+  console.log(newValue)
+  if (newValue.robotQQ != qqYamlObject.qq) {
+    qqYamlObject.qq = newValue.robotQQ;
+    qqYamlContext = dump(qqYamlObject)
+    await writeTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'), qqYamlContext);
+  }
+  if (newValue.robotPassword != qqYamlObject.pwd) {
+    qqYamlObject.pwd = newValue.robotPassword;
+    qqYamlContext = dump(qqYamlObject)
+    await writeTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'), qqYamlContext);
+  }
+  if (newValue.masterQQ != (otherYamlObject.masterQQ ? otherYamlObject.masterQQ[0] : '')) {
+    otherYamlObject.masterQQ = [newValue.masterQQ];
+    otherYamlContext = dump(otherYamlObject)
+    await writeTextFile(await join(await getYunzaiDir(), 'config/config/other.yaml'), otherYamlContext);
+  }
+})
+
+
+// 终端
+
 
 let tempYunzaiProcess: Child = new Child(31113);
 let yunzaiTerminalText = ref('')
@@ -72,15 +145,18 @@ async function startYunzai() {
     message.error("云崽文件夹不存在")
     return
   }
-  if (isStartWithQQNT.value){
+  if (isStartWithQQNT.value) {
     if (isYunzaiOriginWindow.value) {
       console.log("QQNT原生窗口")
-      const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'apps'], {cwd: await getYunzaiDir()});
+      const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'apps'], {
+        cwd: await getYunzaiDir(),
+        encoding: 'gbk'
+      });
       yunzai.spawn()
       return
-    }else {
+    } else {
       console.log("QQNT")
-      const yunzai = new Command('node', 'apps', {cwd: await getYunzaiDir()});
+      const yunzai = new Command('node', 'apps', {cwd: await getYunzaiDir(), encoding: 'gbk'});
       yunzai.stdout.on('data', (data) => {
         yunzaiTerminalText.value += data;
       })
@@ -97,11 +173,14 @@ async function startYunzai() {
   
   if (isYunzaiOriginWindow.value) {
     console.log("初始原生窗口")
-    const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {cwd: await getYunzaiDir()});
+    const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {
+      cwd: await getYunzaiDir(),
+      encoding: 'gbk'
+    });
     yunzai.spawn()
     return
   }
-  const yunzai = new Command('node', 'app', {cwd: await getYunzaiDir()});
+  const yunzai = new Command('node', 'app', {cwd: await getYunzaiDir(), encoding: 'gbk'});
   yunzai.stdout.on('data', (data) => {
     yunzaiTerminalText.value += data;
   })
