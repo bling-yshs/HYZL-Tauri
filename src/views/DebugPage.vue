@@ -107,7 +107,7 @@ async function submitCommand() {
     tempCommandProcess.value.write(commandText.value + '\n')
     return
   }
-  const command = new Command('ps', commandText.value, {cwd: await getYunzaiDir()});
+  const command = new Command('ps', commandText.value, {cwd: await getYunzaiDir(), encoding: 'gbk'});
   command.on('error', error => {
     terminalText.value += error
     message.error({content: '命令执行失败' + error, duration: 2})
