@@ -108,8 +108,11 @@ onMounted(async () => {
     showRobotInfo.value = true
     qqYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'));
     qqYamlObject = load(qqYamlContext) as any;
+    robotInfo.value.robotQQ = qqYamlObject.qq;
+    robotInfo.value.robotPassword = qqYamlObject.pwd;
     otherYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/other.yaml'));
     otherYamlObject = load(otherYamlContext) as any;
+    robotInfo.value.masterQQ = (otherYamlObject.masterQQ ? otherYamlObject.masterQQ[0] : '')
   }
 })
 
