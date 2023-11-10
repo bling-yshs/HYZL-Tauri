@@ -162,7 +162,6 @@ async function startYunzai() {
   }
   if (isStartWithQQNT.value) {
     if (isYunzaiOriginWindow.value) {
-      console.log("QQNT原生窗口")
       const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'apps'], {
         cwd: await getYunzaiDir(),
         encoding: 'gbk'
@@ -170,7 +169,6 @@ async function startYunzai() {
       yunzai.spawn()
       return
     } else {
-      console.log("QQNT")
       const yunzai = new Command('node', 'apps', {cwd: await getYunzaiDir(), encoding: 'gbk'});
       yunzai.stdout.on('data', (data) => {
         yunzaiTerminalText.value += data;
@@ -180,14 +178,12 @@ async function startYunzai() {
       })
       yunzai.on('close', (code) => {
         yunzaiTerminalText.value += `云崽已退出，退出码：${code.code}`
-        console.log(code)
       });
       tempYunzaiProcess = await yunzai.spawn();
     }
   }
   
   if (isYunzaiOriginWindow.value) {
-    console.log("初始原生窗口")
     const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {
       cwd: await getYunzaiDir(),
       encoding: 'gbk'
@@ -204,7 +200,6 @@ async function startYunzai() {
   })
   yunzai.on('close', (code) => {
     yunzaiTerminalText.value += `云崽已退出，退出码：${code.code}`
-    console.log(code)
   });
   tempYunzaiProcess = await yunzai.spawn();
 }
@@ -224,7 +219,20 @@ watch(yunzaiTerminalText, async () => {
 })
 
 async function killAllNode() {
-  fastCommand('taskkill /f /im node.exe').execute()
+  const res = await fastCommand('taskkill /f /im node.exe').execute();
+  if (res.code === 128) {
+    message.error('没有找到存活的 node 进程')
+  }
+  if (res.code === 0) {
+    // res.stdout 按换行符分割
+    let strings = res.stdout.split(/\r?\n/);
+    for (let string of strings) {
+      if (string === '') {
+        continue
+      }
+      message.success(string)
+    }
+  }
 }
 
 </script>
