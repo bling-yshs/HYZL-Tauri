@@ -11,7 +11,7 @@
             />
           </a-col>
         </a-row>
-        <div>
+        <div v-if="showRobotInfo">
           <a-space direction="vertical">
             <a-space>
               <setting-outlined/>
@@ -78,10 +78,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import {CodeOutlined, LockOutlined, QqOutlined, UserOutlined,SettingOutlined} from '@ant-design/icons-vue';
+import {CodeOutlined, LockOutlined, QqOutlined, UserOutlined, SettingOutlined} from '@ant-design/icons-vue';
 import NormalContent from "@/component/NormalContent.vue"
 import indexImage from "@/assets/index-iamge.jpg";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {Child, Command} from "@tauri-apps/api/shell";
 import {getYunzaiDir} from "@/entity/hyzlPath.ts";
 import checkProcessExist from "@/utils/checkProcessExist.ts";
@@ -89,9 +89,12 @@ import {message} from "ant-design-vue";
 import {exists, readTextFile, writeTextFile} from "@tauri-apps/api/fs";
 import {join} from "@tauri-apps/api/path";
 import {dump, load} from "js-yaml";
+import fastCommand from "@/utils/fastCommand.ts";
 
 
 // 机器人信息设置
+
+let showRobotInfo = ref(false)
 
 interface RobotInfo {
   robotQQ: string,
@@ -99,12 +102,21 @@ interface RobotInfo {
   masterQQ: string
 }
 
+onMounted(async () => {
+  // 判断是否存在云崽/config/config文件夹
+  if (await exists(await join(await getYunzaiDir(), 'config/config'))) {
+    showRobotInfo.value = true
+    qqYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'));
+    qqYamlObject = load(qqYamlContext) as any;
+    otherYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/other.yaml'));
+    otherYamlObject = load(otherYamlContext) as any;
+  }
+})
 
-let qqYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'));
-let qqYamlObject = load(qqYamlContext) as any;
-let otherYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/other.yaml'));
-let otherYamlObject = load(otherYamlContext) as any;
-
+let qqYamlContext: string = '';
+let qqYamlObject: any = {};
+let otherYamlContext: string = '';
+let otherYamlObject: any = {};
 
 let robotInfo = ref<RobotInfo>({
   robotQQ: qqYamlObject.qq,
@@ -209,8 +221,7 @@ watch(yunzaiTerminalText, async () => {
 })
 
 async function killAllNode() {
-  const killAllNode = new Command('cmd', ['/c', 'taskkill', '/f', '/im', 'node.exe']);
-  killAllNode.spawn();
+  fastCommand('taskkill /f /im node.exe').execute()
 }
 
 </script>

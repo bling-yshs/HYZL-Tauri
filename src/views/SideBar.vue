@@ -5,7 +5,6 @@
       breakpoint="md"
       theme="light"
     >
-      <!--<a-button @click="testFn"></a-button>-->
       <a-button type="text" @click="() => {collapsed = !collapsed}">
         <Transition mode="out-in" name="slide-fade">
           <menu-unfold-outlined v-if="collapsed"/>
@@ -60,12 +59,6 @@ import {
 } from '@ant-design/icons-vue';
 import {onMounted, ref, watch} from 'vue';
 import {useRoute} from 'vue-router'
-
-// const testFn = async () => {
-//   let yzSignPackagePath = 'C:/Users/yshs/AppData/Local/com.hyzl.desktop/yz-sign-package'
-//   // 复制yz-sign-package中的LiteLoader文件夹到 'QQNT主目录/resources/app' 下
-//   await copyFile(await join(yzSignPackagePath, 'LiteLoader'), 'C:/Users/yshs/AppData/Local/com.hyzl.desktop')
-// };
 
 // 收放按钮
 const collapsed = ref<boolean>(false);
