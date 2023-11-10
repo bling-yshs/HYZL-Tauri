@@ -308,7 +308,8 @@ async function initQQNT() {
     }) as DataResponse;
   
   // 复制yz-sign-package中的ws-config.yaml文件到 '云崽目录/plugins/ws-plugin/config' 下
-  await copyFile(await join(yzSignPackagePath, 'ws-config.yaml'), await join(await getYunzaiDir(), 'plugins/ws-plugin/config/ws-config.yaml'))
+  await copyFile(await join(yzSignPackagePath, 'ws-config.yaml'), await join(await getYunzaiDir(), 'plugins/ws-plugin/config/config/ws-config.yaml'))
+
   
   // 修改 ws-config.yaml
   await changeWsConfig()
