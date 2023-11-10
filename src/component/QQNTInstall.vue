@@ -105,6 +105,7 @@ import {getYunzaiDir} from "@/entity/hyzlPath.ts";
 import {load, dump} from "js-yaml";
 
 import {desktopDir} from '@tauri-apps/api/path';
+import fastCommand from "@/utils/fastCommand.ts";
 
 
 interface Step {
@@ -311,6 +312,9 @@ async function initQQNT() {
   
   // 修改 ws-config.yaml
   await changeWsConfig()
+  
+  // 安装 ws-plugin 的依赖
+  await fastCommand('pnpm install', await getYunzaiDir()).execute()
   
   await createQQNTLinkToDesktop()
   
