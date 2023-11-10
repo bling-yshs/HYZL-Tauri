@@ -63,6 +63,9 @@
         </a-col>
       </a-row>
     </normal-content>
+    <normal-content>
+      <a-button @click="testFn">调试按钮</a-button>
+    </normal-content>
   </div>
 </template>
 <script setup lang="ts">
@@ -74,6 +77,15 @@ import {getAppCacheDir, getYunzaiDir} from "@/entity/hyzlPath.ts";
 import {ref, watch} from "vue";
 import {exists} from "@tauri-apps/api/fs";
 import {writeText} from '@tauri-apps/api/clipboard';
+import {invoke} from "@tauri-apps/api";
+import {join} from "@tauri-apps/api/path";
+
+async function testFn() {
+  await invoke('copy_directory', {
+    source: await join(await getYunzaiDir(), 'config/default_config'),
+    destination: await join(await getYunzaiDir(), 'config/config'),
+  })
+}
 
 const killCommandProcess = async () => {
   if (await checkProcessExist(tempCommandProcess.value.pid)) {
@@ -155,13 +167,7 @@ async function openCacheFolder() {
 }
 
 
-
-
-
-
-
 </script>
-
 
 
 <style scoped>
