@@ -55,7 +55,7 @@ async function downloadMiaoYunzai() {
   message.loading({content: '正在安装喵喵插件...', key: downloadKey, duration: 0});
   const command4 = fastCommand('git clone --depth=1 -b master https://gitee.com/yoimiya-kokomi/miao-plugin.git ./plugins/miao-plugin/', await getYunzaiDir(), true);
   await command4.execute();
-  message.success({content: '下载成功!', key: downloadKey, duration: 5});
+  message.success({content: '下载成功', key: downloadKey, duration: 5});
 }
 
 //下载QQNT消息链接模块
