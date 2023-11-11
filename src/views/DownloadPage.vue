@@ -4,6 +4,7 @@
     <normal-content>
       <h4>云崽</h4>
       <a-space direction="horizontal">
+        <a-button @click="downloadRedis">Redis</a-button>
         <a-button @click="downloadMiaoYunzai">喵喵云崽</a-button>
       </a-space>
     </normal-content>
@@ -26,6 +27,19 @@ import fastCommand from "@/utils/fastCommand.ts";
 import {exists} from "@tauri-apps/api/fs";
 import {invoke} from "@tauri-apps/api";
 import {join} from "@tauri-apps/api/path";
+
+async function downloadRedis() {
+  // 检查是否已经下载Redis
+  if (await exists(await join(await getAppDir(), 'redis-windows-7.0.4'))) {
+    message.info('已经下载过Redis了');
+    return
+  }
+  // 下载Redis
+  message.loading({content: '正在下载Redis...', key: 'downloadRedis', duration: 0});
+  const command = fastCommand('git clone --depth=1 https://gitee.com/bling_yshs/redis-windows-7.0.4', await getAppDir(), true);
+  await command.execute();
+  message.success({content: '下载成功', key: 'downloadRedis', duration: 3});
+}
 
 async function downloadMiaoYunzai() {
   // 检查是否已经下载喵喵云崽

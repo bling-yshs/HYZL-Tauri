@@ -83,13 +83,14 @@ import NormalContent from "@/component/NormalContent.vue"
 import indexImage from "@/assets/index-iamge.jpg";
 import {onMounted, ref, watch} from "vue";
 import {Child, Command} from "@tauri-apps/api/shell";
-import {getYunzaiDir} from "@/entity/hyzlPath.ts";
+import {getAppDir, getYunzaiDir} from "@/entity/hyzlPath.ts";
 import checkProcessExist from "@/utils/checkProcessExist.ts";
 import {message} from "ant-design-vue";
 import {exists, readTextFile, writeTextFile} from "@tauri-apps/api/fs";
 import {join} from "@tauri-apps/api/path";
 import {dump, load} from "js-yaml";
 import fastCommand from "@/utils/fastCommand.ts";
+import checkProgramExist from "@/utils/checkProgramExist.ts";
 
 
 // 机器人信息设置
@@ -159,6 +160,15 @@ async function startYunzai() {
   if (!await exists(await getYunzaiDir())) {
     message.error("云崽文件夹不存在")
     return
+  }
+  // 检查redis是否启动
+  if (!await checkProgramExist('redis')) {
+    message.error("redis未安装或未启动")
+    await fastCommand(
+      'redis-server.exe redis.conf',
+      await join(await getAppDir(), 'redis-windows-7.0.4'),
+      true
+    ).execute();
   }
   if (isStartWithQQNT.value) {
     if (isYunzaiOriginWindow.value) {
