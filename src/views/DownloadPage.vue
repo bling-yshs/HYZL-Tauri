@@ -9,6 +9,10 @@
       </a-space>
     </normal-content>
     <normal-content>
+      <a-modal v-model:open="openQQSet" title="请设置云崽机器人QQ号" @ok="okQQSet">
+        <a-input v-model:value="qq" placeholder="在这里输入云崽机器人QQ号">
+        </a-input>
+      </a-modal>
       <h4>云崽相关</h4>
       <a-space direction="horizontal">
         <a-button @click="installQQNTLink">辅助安装QQNT消息链接模块</a-button>
@@ -19,14 +23,16 @@
 <script setup lang="ts">
 
 import NormalContent from "@/component/NormalContent.vue"
-import {message} from 'ant-design-vue';
+import {message, Modal} from 'ant-design-vue';
 import {getAppDir, getYunzaiDir} from "@/entity/hyzlPath.ts";
 import QQNTInstall from "@/component/QQNTInstall.vue";
-import {ref} from "vue";
+import {createVNode, ref} from "vue";
 import fastCommand from "@/utils/fastCommand.ts";
-import {exists} from "@tauri-apps/api/fs";
+import {exists, readTextFile, writeTextFile} from "@tauri-apps/api/fs";
 import {invoke} from "@tauri-apps/api";
 import {join} from "@tauri-apps/api/path";
+import {dump, load} from "js-yaml";
+import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
 async function downloadRedis() {
   // 检查是否已经下载Redis
@@ -81,12 +87,38 @@ async function downloadMiaoYunzai() {
 
 //下载QQNT消息链接模块
 let isOpenInstallQQNTLink = ref(false)
+let openQQSet = ref(false)
+let qq = ref('')
 
 async function cancelQQNTInstall() {
   isOpenInstallQQNTLink.value = false
 }
 
 async function installQQNTLink() {
+  // 检查云崽QQ号是否为空
+  if (!await exists(await join(await getYunzaiDir(), 'config/config/qq.yaml'))) {
+    message.error("请先下载喵喵云崽")
+    return
+  }
+  let qqYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'));
+  if ((load(qqYamlContext) as any).qq === '') {
+    openQQSet.value = true
+    return
+  }
+  isOpenInstallQQNTLink.value = true
+}
+
+async function okQQSet() {
+  if (qq.value === '') {
+    message.error("QQ号不能为空")
+    return
+  }
+  let qqYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'));
+  let qqYamlObject = load(qqYamlContext) as any;
+  qqYamlObject.qq = qq.value
+  qqYamlContext = dump(qqYamlObject)
+  await writeTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'), qqYamlContext);
+  openQQSet.value = false
   isOpenInstallQQNTLink.value = true
 }
 </script>
