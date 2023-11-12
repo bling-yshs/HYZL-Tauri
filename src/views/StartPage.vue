@@ -166,10 +166,10 @@ async function startRedis(): Promise<boolean> {
   // 检查redis是否启动
   if (!await checkProgramExist('redis')) {
     await fastCommand(
-      'redis-server.exe redis.conf',
+      './redis-server.exe ./redis.conf',
       await join(await getAppDir(), 'redis-windows-7.0.4'),
       true
-    ).execute();
+    ).spawn();
   }
   return true
 }

@@ -2,12 +2,14 @@ import {Command} from "@tauri-apps/api/shell";
 
 function fastCommand(commandContext: string, cwd?: string, withWindow?: boolean): Command {
   if (withWindow) {
-    const command = new Command('cmd', ['/c', 'start', 'cmd', '/k', commandContext], {cwd: cwd, encoding: 'gbk'});
-    return command
+    return new Command('ps', ['Start-Process', 'powershell.exe', '-ArgumentList', `"-NoExit","-Command","${commandContext}"`], {
+      cwd: cwd,
+      encoding: 'gbk'
+    })
   } else {
-    const command = new Command('cmd', ['/c', commandContext], {cwd: cwd, encoding: 'gbk'});
-    return command
+    return new Command('ps', ['-Command', `${commandContext}`], {cwd: cwd, encoding: 'gbk'});
   }
+  
 }
 
 export default fastCommand
