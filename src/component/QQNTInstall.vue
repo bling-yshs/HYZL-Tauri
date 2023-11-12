@@ -212,12 +212,14 @@ async function downloadQQNT() {
     },
   );
   const sha = await invoke("calc_sha256", {path: await join(await getAppCacheDir(), "QQNT.exe")}) as DataResponse;
+  message.info({content: '下载完成，正在校验安装包', key: 'installQQNTLink', duration: 2})
   if (!('0b91fb920b205f41aadafa16621b0072a4a8f7eecc53fb82f46c5ee902176e6d' === sha.data.toString())) {
-    message.error('QQNT安装包校验失败，请尝试重新下载')
+    message.error({content: 'QQNT安装包校验失败，请尝试重新下载', key: 'installQQNTLink', duration: 2})
     loadingDownloadQQNT.value = false
     isDownloadingQQNT.value = false
     return
   }
+  message.info({content: '校验成功，正在启动安装程序', key: 'installQQNTLink', duration: 2})
   fastCommand(`start ${await join(await getAppCacheDir(), "QQNT.exe")}`).spawn()
   loadingDownloadQQNT.value = false
   isDownloadingQQNT.value = false
