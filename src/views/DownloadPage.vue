@@ -23,16 +23,15 @@
 <script setup lang="ts">
 
 import NormalContent from "@/component/NormalContent.vue"
-import {message, Modal} from 'ant-design-vue';
+import {message} from 'ant-design-vue';
 import {getAppDir, getYunzaiDir} from "@/entity/hyzlPath.ts";
 import QQNTInstall from "@/component/QQNTInstall.vue";
-import {createVNode, ref} from "vue";
+import {ref} from "vue";
 import fastCommand from "@/utils/fastCommand.ts";
 import {exists, readTextFile, writeTextFile} from "@tauri-apps/api/fs";
 import {invoke} from "@tauri-apps/api";
 import {join} from "@tauri-apps/api/path";
 import {dump, load} from "js-yaml";
-import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
 async function downloadRedis() {
   // 检查是否已经下载Redis

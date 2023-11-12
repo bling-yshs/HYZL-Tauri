@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-modal :title="'发现新版本: v'+props.manifest.version" @ok="handleOk" :open="isOpen" ok-text="立即更新"
+    <a-modal :title="'发现新版本: v'+props.manifest.version" @ok="handleOk" v-model:open="isOpen" ok-text="立即更新"
              :after-close="()=>emit('close')"
              cancel-text="下次再说" @cancel="handleCancel" :maskClosable="false">
       <pre style="white-space: pre-wrap">{{ changelog }}<span

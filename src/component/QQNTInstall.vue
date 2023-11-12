@@ -1,16 +1,16 @@
 <template>
   <div>
-    <a-modal title="辅助安装QQNT消息链接模块" :open="openStep.step0"
+    <a-modal title="辅助安装QQNT消息链接模块" v-model:open="openStep.step0"
              ok-text="现在开始" @ok="okStep0"
-             cancel-text="下次再说" @cancel="handleCancel"
+             cancel-text="下次再说"
              :maskClosable="false"
              :after-close="afterClose">
       <span>即将开始辅助安装QQNT消息链接模块，由于能力有限，所以可能部分设置需要大家配合</span>
     </a-modal>
     
-    <a-modal title="辅助安装QQNT消息链接模块" :open="openStep.step1"
+    <a-modal title="辅助安装QQNT消息链接模块" v-model:open="openStep.step1"
              ok-text="下一步" @ok="okStep1" :ok-button-props="disableOkStep1"
-             cancel-text="取消安装" @cancel="handleCancel" :maskClosable="false"
+             cancel-text="取消安装" :maskClosable="false"
              :after-close="afterClose">
       <a-space class="start-end">
         <span style="font-size: 0.9rem">第一步：通过 Git 下载所需材料</span>
@@ -21,9 +21,9 @@
     </a-modal>
     
     <a-modal v-if="openStep.step2"
-             title="辅助安装QQNT消息链接模块" :open="openStep.step2"
+             title="辅助安装QQNT消息链接模块" v-model:open="openStep.step2"
              ok-text="下一步" @ok="okStep2"
-             cancel-text="取消安装" @cancel="handleCancel" :maskClosable="false"
+             cancel-text="取消安装" :maskClosable="false"
              :after-close="afterClose">
       <a-space class="start-end">
         <a-space direction="vertical">
@@ -42,9 +42,9 @@
       <a-progress v-if="isDownloadingQQNT" :percent="downloadQQNTPercent"/>
     </a-modal>
     
-    <a-modal title="辅助安装QQNT消息链接模块" :open="openStep.step3"
+    <a-modal title="辅助安装QQNT消息链接模块" v-model:open="openStep.step3"
              ok-text="下一步" @ok="okStep3"
-             cancel-text="取消安装" @cancel="handleCancel" :maskClosable="false"
+             cancel-text="取消安装" :maskClosable="false"
              :after-close="afterClose">
       <a-space class="start-end">
         <a-typography-paragraph style="margin: 0">
@@ -56,9 +56,9 @@
       </a-space>
     </a-modal>
     
-    <a-modal title="辅助安装QQNT消息链接模块" :open="openStep.step4"
+    <a-modal title="辅助安装QQNT消息链接模块" v-model:open="openStep.step4"
              ok-text="下一步" @ok="okStep4"
-             cancel-text="取消安装" @cancel="handleCancel" :maskClosable="false"
+             cancel-text="取消安装" :maskClosable="false"
              :confirm-loading="QQNTConfirmLoading"
              :after-close="afterClose"
     >
@@ -74,9 +74,9 @@
       </a-space>
     </a-modal>
     
-    <a-modal title="辅助安装QQNT消息链接模块" :open="openStep.step5"
+    <a-modal title="辅助安装QQNT消息链接模块" v-model:open="openStep.step5"
              ok-text="完成安装" @ok="okStep5" :ok-button-props="disableOkStep5"
-             cancel-text="取消安装" @cancel="handleCancel" :maskClosable="false"
+             cancel-text="取消安装" :maskClosable="false"
              :after-close="afterClose">
       <a-space direction="vertical">
         <a-space>
@@ -93,18 +93,15 @@
 import {h, onMounted, ref, watch} from "vue";
 import {message} from "ant-design-vue";
 import {Command} from "@tauri-apps/api/shell";
-import {getAppCacheDir} from "@/entity/hyzlPath.ts";
+import {getAppCacheDir, getYunzaiDir} from "@/entity/hyzlPath.ts";
 import {download} from "tauri-plugin-upload-api";
-import {join} from "@tauri-apps/api/path";
+import {desktopDir, join} from "@tauri-apps/api/path";
 import {copyFile, exists, readDir, readTextFile, writeTextFile} from "@tauri-apps/api/fs";
 import {DataResponse} from "@/entity/response.ts";
 import {invoke} from "@tauri-apps/api";
 import {LoadingOutlined, SnippetsOutlined} from '@ant-design/icons-vue';
 import {readText} from "@tauri-apps/api/clipboard";
-import {getYunzaiDir} from "@/entity/hyzlPath.ts";
-import {load, dump} from "js-yaml";
-
-import {desktopDir} from '@tauri-apps/api/path';
+import {dump, load} from "js-yaml";
 import fastCommand from "@/utils/fastCommand.ts";
 
 
@@ -143,11 +140,6 @@ async function afterClose() {
   }
 }
 
-async function handleCancel() {
-  Object.keys(openStep.value).forEach(k => {
-    openStep.value[k as keyof Step] = false
-  })
-}
 
 const emits = defineEmits(['cancelQQNTInstall']);
 
