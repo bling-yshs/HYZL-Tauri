@@ -100,7 +100,7 @@ async function installQQNTLink() {
     return
   }
   let qqYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'));
-  if ((load(qqYamlContext) as any).qq === '') {
+  if ((load(qqYamlContext) as any).qq === ''|| (load(qqYamlContext) as any).qq === null) {
     openQQSet.value = true
     return
   }
