@@ -105,7 +105,7 @@ interface RobotInfo {
 
 onMounted(async () => {
   // 判断是否存在云崽/config/config文件夹
-  if (await exists(await join(await getYunzaiDir(), 'config/config'))) {
+  if (await exists(await join(await getYunzaiDir(), 'config/config/qq.yaml')) && await exists(await join(await getYunzaiDir(), 'config/config/other.yaml'))) {
     showRobotInfo.value = true
     qqYamlContext = await readTextFile(await join(await getYunzaiDir(), 'config/config/qq.yaml'));
     qqYamlObject = load(qqYamlContext) as any;
@@ -183,6 +183,7 @@ async function startYunzai() {
     return
   }
   if (isStartWithQQNT.value === true) {
+    // 检查QQ是否已经启动
     if (isYunzaiOriginWindow.value === true) {
       fastCommand('node apps', await getYunzaiDir(), true).spawn()
       return
