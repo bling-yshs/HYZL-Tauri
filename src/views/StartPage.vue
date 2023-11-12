@@ -78,11 +78,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import {CodeOutlined, LockOutlined, QqOutlined, UserOutlined, SettingOutlined} from '@ant-design/icons-vue';
+import {CodeOutlined, LockOutlined, QqOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons-vue';
 import NormalContent from "@/component/NormalContent.vue"
 import indexImage from "@/assets/index-iamge.jpg";
 import {onMounted, ref, watch} from "vue";
-import {Child, Command} from "@tauri-apps/api/shell";
+import {Child} from "@tauri-apps/api/shell";
 import {getAppDir, getYunzaiDir} from "@/entity/hyzlPath.ts";
 import checkProcessExist from "@/utils/checkProcessExist.ts";
 import {message} from "ant-design-vue";
@@ -129,7 +129,6 @@ let robotInfo = ref<RobotInfo>({
 })
 
 watch(robotInfo.value, async (newValue) => {
-  console.log(newValue)
   if (newValue.robotQQ != qqYamlObject.qq) {
     qqYamlObject.qq = newValue.robotQQ;
     qqYamlContext = dump(qqYamlObject)
@@ -156,30 +155,39 @@ let yunzaiTerminalText = ref('')
 let isYunzaiOriginWindow = ref(true)
 let isStartWithQQNT = ref(true)
 
-async function startYunzai() {
-  if (!await exists(await getYunzaiDir())) {
-    message.error("云崽文件夹不存在")
-    return
+
+// 如果未安装Redis，返回false，其它情况返回true
+async function startRedis(): Promise<boolean> {
+  // 检查redis是否安装
+  if (!await exists(await join(await getAppDir(), 'redis-windows-7.0.4'))) {
+    message.error("请先下载 Redis")
+    return false
   }
   // 检查redis是否启动
   if (!await checkProgramExist('redis')) {
-    message.error("redis未安装或未启动")
     await fastCommand(
       'redis-server.exe redis.conf',
       await join(await getAppDir(), 'redis-windows-7.0.4'),
       true
     ).execute();
   }
-  if (isStartWithQQNT.value) {
-    if (isYunzaiOriginWindow.value) {
-      const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'apps'], {
-        cwd: await getYunzaiDir(),
-        encoding: 'gbk'
-      });
-      yunzai.spawn()
+  return true
+}
+
+async function startYunzai() {
+  if (!await exists(await getYunzaiDir())) {
+    message.error("云崽文件夹不存在")
+    return
+  }
+  if (!await startRedis()) {
+    return
+  }
+  if (isStartWithQQNT.value === true) {
+    if (isYunzaiOriginWindow.value === true) {
+      fastCommand('node apps', await getYunzaiDir(), true).spawn()
       return
     } else {
-      const yunzai = new Command('node', 'apps', {cwd: await getYunzaiDir(), encoding: 'gbk'});
+      const yunzai = fastCommand('node apps', await getYunzaiDir(), false);
       yunzai.stdout.on('data', (data) => {
         yunzaiTerminalText.value += data;
       })
@@ -192,26 +200,24 @@ async function startYunzai() {
       tempYunzaiProcess = await yunzai.spawn();
     }
   }
-  
-  if (isYunzaiOriginWindow.value) {
-    const yunzai = new Command('cmd', ['/c', 'start', 'cmd', '/k', 'node', 'app'], {
-      cwd: await getYunzaiDir(),
-      encoding: 'gbk'
-    });
-    yunzai.spawn()
-    return
+  if (isStartWithQQNT.value === false) {
+    if (isYunzaiOriginWindow.value === true) {
+      fastCommand('node app', await getYunzaiDir(), true).spawn()
+      return
+    } else {
+      const yunzai = fastCommand('node app', await getYunzaiDir(), false);
+      yunzai.stdout.on('data', (data) => {
+        yunzaiTerminalText.value += data;
+      })
+      yunzai.stderr.on('data', (data) => {
+        yunzaiTerminalText.value += data;
+      })
+      yunzai.on('close', (code) => {
+        yunzaiTerminalText.value += `云崽已退出，退出码：${code.code}`
+      });
+      tempYunzaiProcess = await yunzai.spawn();
+    }
   }
-  const yunzai = new Command('node', 'app', {cwd: await getYunzaiDir(), encoding: 'gbk'});
-  yunzai.stdout.on('data', (data) => {
-    yunzaiTerminalText.value += data;
-  })
-  yunzai.stderr.on('data', (data) => {
-    yunzaiTerminalText.value += data;
-  })
-  yunzai.on('close', (code) => {
-    yunzaiTerminalText.value += `云崽已退出，退出码：${code.code}`
-  });
-  tempYunzaiProcess = await yunzai.spawn();
 }
 
 async function killYunzaiProcess() {

@@ -31,7 +31,7 @@ import {join} from "@tauri-apps/api/path";
 async function downloadRedis() {
   // 检查是否已经下载Redis
   if (await exists(await join(await getAppDir(), 'redis-windows-7.0.4'))) {
-    message.info('已经下载过Redis了');
+    message.info('已经下载过 Redis 了');
     return
   }
   // 下载Redis
@@ -63,14 +63,14 @@ async function downloadMiaoYunzai() {
   message.loading({content: '正在下载喵喵云崽...', key: downloadKey, duration: 0});
   const command2 = fastCommand('git clone --depth=1 https://gitee.com/yoimiya-kokomi/Miao-Yunzai.git', await getAppDir(), true);
   await command2.execute();
-  // 安装依赖
-  message.loading({content: '正在安装依赖...', key: downloadKey, duration: 0});
-  const command3 = fastCommand('pnpm install', await getYunzaiDir(), true);
-  await command3.execute();
   // 安装喵喵插件
   message.loading({content: '正在安装喵喵插件...', key: downloadKey, duration: 0});
   const command4 = fastCommand('git clone --depth=1 -b master https://gitee.com/yoimiya-kokomi/miao-plugin.git ./plugins/miao-plugin/', await getYunzaiDir(), true);
   await command4.execute();
+  // 安装依赖
+  message.loading({content: '正在安装依赖...', key: downloadKey, duration: 0});
+  const command3 = fastCommand('pnpm install', await getYunzaiDir(), true);
+  await command3.execute();
   // 复制云崽文件夹/config/default_config 文件夹 到 云崽文件夹/config/config
   await invoke('copy_directory', {
     source: await join(await getYunzaiDir(), 'config/default_config'),
