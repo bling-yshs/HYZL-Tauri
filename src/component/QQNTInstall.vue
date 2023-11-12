@@ -170,7 +170,7 @@ onMounted(async () => {
 
 async function downloadGitFiles() {
   message.loading({content: '正在通过 Git 下载所需文件', duration: 0, key: 'installQQNTLink'})
-  const command = new Command('git', ['clone', '--depth=1', 'https://gitee.com/bling_yshs/yz-sign-package'], {cwd: await getAppCacheDir()});
+  const command = fastCommand('git clone --depth=1 https://gitee.com/bling_yshs/yz-sign-package', await getAppCacheDir(), true);
   command.on('close', (code) => {
     if (code.code === 0) {
       message.success({content: '下载成功', key: 'installQQNTLink', duration: 2})
@@ -205,7 +205,7 @@ async function downloadQQNT() {
     if ('0b91fb920b205f41aadafa16621b0072a4a8f7eecc53fb82f46c5ee902176e6d' === sha.data.toString()) {
       message.info('QQNT已下载，正在启动安装程序...')
       loadingDownloadQQNT.value = false
-      new Command('cmd', ['/c', 'start', await join(await getAppCacheDir(), "QQNT.exe")]).spawn()
+      fastCommand(`start ${await join(await getAppCacheDir(), "QQNT.exe")}`).spawn()
       return
     }
   }
@@ -228,7 +228,7 @@ async function downloadQQNT() {
     isDownloadingQQNT.value = false
     return
   }
-  new Command('cmd', ['/c', 'start', await join(await getAppCacheDir(), "QQNT.exe")]).spawn()
+  fastCommand(`start ${await join(await getAppCacheDir(), "QQNT.exe")}`).spawn()
   loadingDownloadQQNT.value = false
   isDownloadingQQNT.value = false
 }
@@ -240,7 +240,7 @@ async function okStep3() {
 }
 
 async function installVC() {
-  new Command('cmd', ['/c', 'start', await join(yzSignPackagePath, 'VC_redist.x64.exe')]).spawn()
+  fastCommand('start https://aka.ms/vs/16/release/vc_redist.x64.exe').spawn()
 }
 
 async function pasteQQNTDir() {
@@ -298,7 +298,7 @@ async function initQQNT() {
   await copyFile(await join(yzSignPackagePath, 'apps.js'), await join(await getYunzaiDir(), 'apps.js'))
   
   // 在云崽目录下执行 `  git clone -b red --depth=1 https://gitee.com/xiaoye12123/ws-plugin.git ./plugins/ws-plugin/`
-  await new Command('git', ['clone', '-b', 'red', '--depth=1', 'https://gitee.com/xiaoye12123/ws-plugin.git', './plugins/ws-plugin/'], {cwd: await getYunzaiDir()}).execute();
+  await fastCommand('git clone -b red --depth=1 https://gitee.com/xiaoye12123/ws-plugin.git ./plugins/ws-plugin/', await getYunzaiDir(), true).execute()
   
   // 复制 '云崽目录/plugins/ws-plugin/config/default_config' 到 '云崽目录/plugins/ws-plugin/config/config'
   await invoke("copy_directory",
@@ -309,7 +309,7 @@ async function initQQNT() {
   
   // 复制yz-sign-package中的ws-config.yaml文件到 '云崽目录/plugins/ws-plugin/config' 下
   await copyFile(await join(yzSignPackagePath, 'ws-config.yaml'), await join(await getYunzaiDir(), 'plugins/ws-plugin/config/config/ws-config.yaml'))
-
+  
   
   // 修改 ws-config.yaml
   await changeWsConfig()

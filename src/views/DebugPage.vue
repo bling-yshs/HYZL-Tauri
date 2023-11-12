@@ -77,6 +77,7 @@ import {getAppCacheDir, getYunzaiDir} from "@/entity/hyzlPath.ts";
 import {ref, watch} from "vue";
 import {exists} from "@tauri-apps/api/fs";
 import {writeText} from '@tauri-apps/api/clipboard';
+import fastCommand from "@/utils/fastCommand.ts";
 
 async function testFn() {
 }
@@ -113,7 +114,7 @@ async function submitCommand() {
     tempCommandProcess.value.write(commandText.value + '\n')
     return
   }
-  const command = new Command('ps', commandText.value, {cwd: await getYunzaiDir(), encoding: 'gbk'});
+  const command = fastCommand(commandText.value, await getYunzaiDir(), false);
   command.on('error', error => {
     terminalText.value += error
     message.error({content: '命令执行失败' + error, duration: 2})
