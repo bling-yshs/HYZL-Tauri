@@ -127,7 +127,6 @@ const openStep = ref<Step>({
 
 
 async function afterClose() {
-  console.log('关闭后')
   let afterCloseAll = true
   Object.values(openStep.value).filter((v) => {
     if (v) {
@@ -135,7 +134,6 @@ async function afterClose() {
     }
   })
   if (afterCloseAll) {
-    console.log('关闭全部')
     emits('cancelQQNTInstall')
   }
 }
