@@ -66,7 +66,10 @@
               <template #overlay>
                 <a-menu>
                   <a-menu-item key="1" danger @click="killAllNode">
-                    强制停止所有 Node 程序
+                    强制停止所有 node 程序
+                  </a-menu-item>
+                  <a-menu-item key="2" danger @click="killAllQQ">
+                    强制停止所有 QQ 程序
                   </a-menu-item>
                 </a-menu>
               </template>
@@ -248,6 +251,23 @@ async function killAllNode() {
   const res = await fastCommand('taskkill /f /im node.exe').execute();
   if (res.code === 128) {
     message.error('没有找到存活的 node 进程')
+  }
+  if (res.code === 0) {
+    // res.stdout 按换行符分割
+    let strings = res.stdout.split(/\r?\n/);
+    for (let string of strings) {
+      if (string === '') {
+        continue
+      }
+      message.success(string)
+    }
+  }
+}
+
+async function killAllQQ() {
+  const res = await fastCommand('taskkill /f /im qq.exe').execute();
+  if (res.code === 128) {
+    message.error('没有找到存活的 QQ 进程')
   }
   if (res.code === 0) {
     // res.stdout 按换行符分割
