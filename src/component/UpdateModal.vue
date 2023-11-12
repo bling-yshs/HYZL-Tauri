@@ -6,7 +6,7 @@
       <pre style="white-space: pre-wrap">{{ changelog }}<span
         v-if="showMore"
         @click="()=>{changelog=props.manifest.body;showMore=false}"
-        style="color: #247fff">展开更多
+        style="color: #247fff">展开剩余的{{remainLog}}行
         </span></pre>
     </a-modal>
   </div>
@@ -23,10 +23,13 @@ let isOpen = ref(true);
 let props = defineProps(['manifest']);
 // 关闭后传递给父组件
 let emit = defineEmits(['close'])
+// 统计剩余的更新日志行数
+let remainLog = ref(0)
 
 onMounted(async () => {
   let arr = props.manifest.body.split('\n') as Array<string>
   if (arr.length > 5) {
+    remainLog.value = arr.length - 5
     arr.splice(5)
     arr[4] += ' ...'
     showMore.value = true
