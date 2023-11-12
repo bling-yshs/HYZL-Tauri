@@ -182,6 +182,15 @@ async function startYunzai() {
   if (!await startRedis()) {
     return
   }
+  // 判断账号，还有主人QQ是否为空，如果为空，就不启动云崽
+  if (robotInfo.value.robotQQ === '') {
+    message.error("请先设置云崽QQ账号")
+    return
+  }
+  if (robotInfo.value.masterQQ === '') {
+    message.error("请先设置云崽主人QQ")
+    return
+  }
   if (isStartWithQQNT.value === true) {
     // 检查QQ是否已经启动
     if (isYunzaiOriginWindow.value === true) {
