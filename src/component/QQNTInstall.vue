@@ -232,7 +232,7 @@ async function okStep3() {
 }
 
 async function installVC() {
-  fastCommand('start https://aka.ms/vs/16/release/vc_redist.x64.exe').spawn()
+  fastCommand('start VC_redist.x64.exe', await join(await getAppCacheDir(), 'yz-sign-package')).spawn()
 }
 
 async function pasteQQNTDir() {
@@ -279,6 +279,9 @@ async function initQQNT() {
   // 复制yz-sign-package中的LiteLoaderQQNT-Launcher_x64.exe文件到QQNT主目录
   await copyFile(await join(yzSignPackagePath, 'LiteLoaderQQNT-Launcher_x64.exe'), await join(QQNTDir.value, 'LiteLoaderQQNT-Launcher_x64.exe'))
   
+  // 创建桌面快捷方式
+  await createQQNTLinkToDesktop()
+  
   // 复制yz-sign-package中的LiteLoader文件夹到 'QQNT主目录/resources/app' 下
   await invoke("copy_directory",
     {
@@ -309,16 +312,13 @@ async function initQQNT() {
   // 安装 ws-plugin 的依赖
   await fastCommand('pnpm install', await getYunzaiDir()).execute()
   
-  await createQQNTLinkToDesktop()
-  
   isInitializingQQNTText.value = '初始化完成，QQNT消息链接模块已安装完毕'
   isInitializingQQNT.value = false;
   disableOkStep5.value = {disabled: false}
 }
 
 async function createQQNTLinkToDesktop() {
-  // 执行 'mklink "QQNT目录/LiteLoaderQQNT-Launcher_x64.exe" "桌面/LiteLoaderQQNT-Launcher_x64.exe"'
-  await new Command('ps', ['mklink', `"${await join(QQNTDir.value, 'LiteLoaderQQNT-Launcher_x64.exe')}"`, `"${await join(await desktopDir(), 'LiteLoaderQQNT-Launcher_x64.exe')}"`]).spawn();
+  new Command('ps', `$shell = New-Object -ComObject WScript.Shell; $shortcut = $shell.CreateShortcut("${await join(await desktopDir(), 'LiteLoaderQQNT-Launcher_x64.lnk')}"); $shortcut.TargetPath = "${await join(QQNTDir.value, 'LiteLoaderQQNT-Launcher_x64.exe')}"; $shortcut.Save()`, {encoding: 'gbk'}).spawn()
 }
 
 async function changeWsConfig() {
