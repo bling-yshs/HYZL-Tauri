@@ -1,41 +1,37 @@
 <template>
   <div>
     <normal-content>
-      <a-space direction="vertical">
-        <a-row>
-          <a-col :span="24">
-            <a-image
-              :preview="false"
-              style="border-radius: 0.5rem;object-fit: cover;"
-              :src="indexImage"
-            />
-          </a-col>
-        </a-row>
-        <div v-if="showRobotInfo">
-          <a-space direction="vertical">
-            <a-space>
-              <setting-outlined/>
-              <span>云崽设置</span>
-            </a-space>
-            <a-space>
-              <a-input v-model:value="robotInfo.robotQQ" placeholder="机器人QQ号">
-                <template #prefix>
-                  <qq-outlined/>
-                </template>
-              </a-input>
-              <a-input-password v-model:value="robotInfo.robotPassword" placeholder="机器人密码">
-                <template #prefix>
-                  <lock-outlined/>
-                </template>
-              </a-input-password>
-              <a-input v-model:value="robotInfo.masterQQ" placeholder="主人QQ号">
-                <template #prefix>
-                  <user-outlined/>
-                </template>
-              </a-input>
-            </a-space>
+      
+      <a-space direction="vertical" style="width: 100%">
+        <a-image
+          :preview="false"
+          width="100%"
+          style="border-radius: 0.5rem;object-fit: cover"
+          :src="indexImage"
+        />
+        <a-space direction="vertical" v-if="showRobotInfo">
+          <a-space>
+            <setting-outlined/>
+            <span>云崽设置</span>
           </a-space>
-        </div>
+          <a-space>
+            <a-input v-model:value="robotInfo.robotQQ" placeholder="机器人QQ号">
+              <template #prefix>
+                <qq-outlined/>
+              </template>
+            </a-input>
+            <a-input-password v-model:value="robotInfo.robotPassword" placeholder="机器人密码">
+              <template #prefix>
+                <lock-outlined/>
+              </template>
+            </a-input-password>
+            <a-input v-model:value="robotInfo.masterQQ" placeholder="主人QQ号">
+              <template #prefix>
+                <user-outlined/>
+              </template>
+            </a-input>
+          </a-space>
+        </a-space>
         
         <a-space>
           <CodeOutlined/>
@@ -60,7 +56,9 @@
             </a-tooltip>
           </a-space>
           <a-space>
-            <a-button>复制云崽日志</a-button>
+            <a-tooltip title="原生窗口启动时不可用">
+              <a-button @click="copyLog">复制云崽日志</a-button>
+            </a-tooltip>
             <a-dropdown-button @click="killYunzaiProcess" danger>
               停止云崽
               <template #overlay>
@@ -94,7 +92,14 @@ import {join} from "@tauri-apps/api/path";
 import {dump, load} from "js-yaml";
 import fastCommand from "@/utils/fastCommand.ts";
 import checkProgramExist from "@/utils/checkProgramExist.ts";
+import { writeText } from '@tauri-apps/api/clipboard';
 
+
+// 复制云崽日志
+async function copyLog() {
+  await writeText(yunzaiTerminalText.value);
+  message.success('已复制云崽日志')
+}
 
 // 机器人信息设置
 
