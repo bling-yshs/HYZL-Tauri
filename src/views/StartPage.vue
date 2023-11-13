@@ -1,19 +1,19 @@
 <template>
   <div>
     <normal-content>
-      <a-space direction="vertical" class="w-full">
+      <a-flex gap="small" vertical direction="vertical">
         <a-image
           :preview="false"
           width="100%"
           class="object-cover rounded-lg"
           :src="indexImage"
         />
-        <a-space direction="vertical" v-if="showRobotInfo">
-          <a-space>
+        <a-flex gap="small" vertical v-if="showRobotInfo">
+          <a-flex gap="small">
             <setting-outlined/>
             <span>云崽设置</span>
-          </a-space>
-          <a-space>
+          </a-flex>
+          <a-flex gap="small">
             <a-input v-model:value="robotInfo.robotQQ" placeholder="机器人QQ号">
               <template #prefix>
                 <qq-outlined/>
@@ -29,13 +29,13 @@
                 <user-outlined/>
               </template>
             </a-input>
-          </a-space>
-        </a-space>
+          </a-flex>
+        </a-flex>
         
-        <a-space>
+        <a-flex gap="small">
           <CodeOutlined/>
           <p>云崽日志</p>
-        </a-space>
+        </a-flex>
         <a-textarea
           :rows="8"
           readonly
@@ -44,8 +44,8 @@
           id="yunzaiTerminal"
         >
         </a-textarea>
-        <a-space style="display: flex; justify-content: space-between;">
-          <a-space>
+        <a-flex justify="space-between">
+          <a-flex gap="small" align="center">
             <a-button type="primary" @click="startYunzai">启动云崽</a-button>
             <a-tooltip title="连接到QQNT">
               <a-checkbox v-model:checked="isStartWithQQNT">QQNT</a-checkbox>
@@ -53,8 +53,8 @@
             <a-tooltip title="会在命令行窗口中打开云崽">
               <a-checkbox v-model:checked="isYunzaiOriginWindow">原生窗口</a-checkbox>
             </a-tooltip>
-          </a-space>
-          <a-space>
+          </a-flex>
+          <a-flex gap="small">
             <a-tooltip title="原生窗口启动时不可用">
               <a-button @click="copyLog">复制云崽日志</a-button>
             </a-tooltip>
@@ -71,9 +71,9 @@
                 </a-menu>
               </template>
             </a-dropdown-button>
-          </a-space>
-        </a-space>
-      </a-space>
+          </a-flex>
+        </a-flex>
+      </a-flex>
     </normal-content>
   </div>
 </template>
