@@ -92,7 +92,7 @@ import {join} from "@tauri-apps/api/path";
 import {dump, load} from "js-yaml";
 import fastCommand from "@/utils/fastCommand.ts";
 import checkProgramExist from "@/utils/checkProgramExist.ts";
-import { writeText } from '@tauri-apps/api/clipboard';
+import {writeText} from '@tauri-apps/api/clipboard';
 
 
 // 复制云崽日志
@@ -288,4 +288,7 @@ async function killAllQQ() {
 
 </script>
 <style scoped>
+.w100 {
+  width: 100%;
+}
 </style>
