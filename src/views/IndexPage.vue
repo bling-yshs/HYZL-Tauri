@@ -1,16 +1,14 @@
 <template>
-  <div class="container">
-    <div>
-      <SideBar @changeSelect="handleChangeSelect"/>
-    </div>
-    <div class="content">
+  <a-flex>
+    <SideBar @changeSelect="handleChangeSelect"/>
+    <div class="w-full">
       <router-view v-slot="{ Component }">
         <transition name="slide-fade" mode="out-in">
-          <component :is="Component" />
+          <component :is="Component"/>
         </transition>
       </router-view>
     </div>
-  </div>
+  </a-flex>
 </template>
 
 <script setup lang="ts">
@@ -24,13 +22,6 @@ const handleChangeSelect = (value: Array<string>) => {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-}
-
-.content {
-  flex-grow: 1;
-}
 
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;

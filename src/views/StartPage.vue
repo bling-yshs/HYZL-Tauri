@@ -1,12 +1,11 @@
 <template>
   <div>
     <normal-content>
-      
-      <a-space direction="vertical" style="width: 100%">
+      <a-space direction="vertical" class="w-full">
         <a-image
           :preview="false"
           width="100%"
-          style="border-radius: 0.5rem;object-fit: cover"
+          class="object-cover rounded-lg"
           :src="indexImage"
         />
         <a-space direction="vertical" v-if="showRobotInfo">
@@ -288,7 +287,4 @@ async function killAllQQ() {
 
 </script>
 <style scoped>
-.w100 {
-  width: 100%;
-}
 </style>

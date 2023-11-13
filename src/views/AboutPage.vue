@@ -15,7 +15,6 @@
           <a-space>
             <a-image
               height="2rem"
-              width=""
               :preview="false"
               :src="appIcon"
             />

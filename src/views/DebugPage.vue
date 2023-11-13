@@ -1,7 +1,7 @@
 <template>
   <div>
     <normal-content>
-      <a-space direction="vertical" style="width: 100%">
+      <a-space direction="vertical" class="w-full">
         <a-space>
           <CodeOutlined/>
           <p>云崽终端</p>

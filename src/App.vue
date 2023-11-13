@@ -1,6 +1,5 @@
 <template>
   <Suspense> <!--全局异步挂载-->
-    
     <a-config-provider :locale="zhCN">
       <a-app> <!--全局挂载 message-->
         <div :class="{'not-win11':notWin11}">

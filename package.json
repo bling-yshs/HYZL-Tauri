@@ -26,7 +26,10 @@
     "@tauri-apps/cli": "^1.5.6",
     "@types/node": "^20.9.0",
     "@vitejs/plugin-vue": "^4.4.1",
+    "autoprefixer": "^10.4.16",
     "husky": "^8.0.3",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "vue-tsc": "^1.8.22"
