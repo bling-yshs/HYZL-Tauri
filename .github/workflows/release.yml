@@ -1,4 +1,4 @@
-name: Release
+name: Create release
 run-name: "✨ 发布正式版: (${{ github.event.inputs.workflow_message }})"
 on:
   workflow_dispatch:

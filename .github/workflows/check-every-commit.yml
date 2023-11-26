@@ -1,4 +1,4 @@
-name: check every commit
+name: Check every commit
 
 run-name: "🔍推送时检查: (${{ github.event.head_commit.message }})"
 

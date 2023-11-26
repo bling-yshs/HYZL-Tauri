@@ -1,4 +1,4 @@
-name: Sync To Gitee
+name: Sync to gitee
 run-name: "🔁 同步到 Gitee: (${{ github.event.inputs.workflow_message }})"
 
 on:
