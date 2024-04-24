@@ -11,45 +11,45 @@ jobs:
   ci-build:
     runs-on: windows-latest
     steps:
-      - name: Checkout
+      - name: github checkout
         uses: actions/checkout@v4
 
-      - name: Rust setup
+      - name: setup rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Rust cache
+      - name: rust cache
         uses: swatinem/rust-cache@v2
         with:
           workspaces: './src-tauri -> target'
 
-      - name: Pnpm setup
+      - name: setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: latest
 
-      - name: Node setup and cache
+      - name: setup node and cache node_modules
         uses: actions/setup-node@v3
         with:
           node-version: "20.x"
           cache: "pnpm"
 
-      - name: Install frontend dependencies
+      - name: install frontend dependencies
         run: pnpm install
 
-      - name: Build app
+      - name: build app
         env:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         run: |
           pnpm tauri build
 
-      - name: Upload build result to artifacts
+      - name: upload build result to artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-msi-${{ github.sha }}
           path: ./src-tauri/target/release/bundle/msi/*
 
-      - name: Create ci release to tag v9.9.9
+      - name: create ci release to tag v9.9.9
         uses: ncipollo/release-action@v1
         with:
           name: CI-Build
